@@ -36,6 +36,7 @@ body {
 	background: var(--clr-white);
 	line-height: 1.5;
 	font-size: 0.875rem;
+	width: auto;
 }
 a {
 	text-decoration: none;
@@ -70,6 +71,7 @@ p {
 }
 
 @media screen and (min-width) {
+	
 	h1 {
 		font-size: 4rem;
 	}
