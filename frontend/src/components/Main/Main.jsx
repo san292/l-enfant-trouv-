@@ -17,6 +17,7 @@ const Wrapper = styled.main`
     url(${childPhoto}) center/cover no-repeat fixed;
   text-justify: auto;
   position: static;
+
   button {
     background-color: white;
     color: lime;

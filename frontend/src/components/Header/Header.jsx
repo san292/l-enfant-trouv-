@@ -62,6 +62,7 @@ const Wrapper = styled.header`
   background-color: #eee9e9;
   position: fixed;
   width: 100%;
+
   nav {
     display: flex;
     flex-direction: row;
@@ -92,6 +93,7 @@ const Wrapper = styled.header`
       border-bottom: 1px;
       border-bottom: solid 1px;
     }
+
     li:hover {
       color: #00ff00;
       background-color: white;
@@ -110,6 +112,7 @@ const Wrapper = styled.header`
       left: 0.5rem;
     }
   }
+
   input:hover {
     padding: 0.4rem;
   }
