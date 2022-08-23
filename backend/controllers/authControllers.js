@@ -1,6 +1,7 @@
 const User = require('../models/userModels');
 const catchAsync = require('../utils/catchAsync');
 const { StatusCodes } = require('http-status-codes');
+const { createJwt } = require('../utils/jwtHelpers');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -9,9 +10,23 @@ exports.register = catchAsync(async (req, res, next) => {
     throw Error('Please provide all values');
   }
 
+  const emailAlreadyExists = await User.findOne({ email });
+
+  if (emailAlreadyExists) {
+    throw new Error('Email already exists');
+  }
+
   const user = await User.create(req.body);
 
-  res.status(StatusCodes.CREATED).json(user);
+  const token = createJwt(user._id);
+
+  res.status(StatusCodes.CREATED).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
 });
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
