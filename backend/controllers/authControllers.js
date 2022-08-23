@@ -14,5 +14,28 @@ exports.register = catchAsync(async (req, res, next) => {
   res.status(StatusCodes.CREATED).json(user);
 });
 exports.login = catchAsync(async (req, res, next) => {
-  res.json(req.body);
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new Error('Please includes all values');
+  }
+
+  const user = await User.findOne({ email });
+  console.log(user);
+  if (!user) {
+    throw Error('Your email is invalid');
+  }
+
+  const isMatch = await user.comparePassword(password);
+  console.log(isMatch);
+  if (!isMatch) {
+    throw Error('Your password is invalid');
+  }
+
+  res.status(StatusCodes.OK).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
 });
