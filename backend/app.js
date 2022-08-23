@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const errorHandler = require('./middleware/error-handler');
+const notFound = require('./middleware/not-found');
 require('colors');
 
 const authRouter = require('./routes/authRouter');
@@ -15,5 +17,10 @@ app.use(express.urlencoded({ extended: false }));
 
 //ROUTER
 app.use('/api/v1/auth', authRouter);
+
+//ERROR MIDDLEWARE
+
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;

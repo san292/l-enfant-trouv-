@@ -43,7 +43,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const isMatchPassword = await user.comparePassword(password);
-  console.log(isMatch);
+
   if (!isMatchPassword) {
     throw new CustomError.UnauthenticatedError('Your password is invalid');
   }
