@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const morgan = require('morgan');
 const errorHandler = require('./middleware/error-handler');
 const notFound = require('./middleware/not-found');
@@ -12,6 +13,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
