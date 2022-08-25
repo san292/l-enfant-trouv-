@@ -11,6 +11,8 @@ const authRouter = require('./routes/authRouter');
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+var cors = require('cors');
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
