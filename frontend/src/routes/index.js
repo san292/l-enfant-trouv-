@@ -9,17 +9,17 @@ import SeConnecter from '../pages/SeConnecter';
 import Creercompte from '../pages/Creercompte';
 
 const RouteIndex = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="mission" element={<Mission />} />
-      <Route path="programme" element={<Programme />} />
-      <Route path="observatoire" element={<Observatoire />} />
-      <Route path="noussoutenir" element={<NousSoutenir />} />
-      <Route path="apropos" element={<Apropos />} />
-      <Route path="seconnecter" element={<SeConnecter />} />
-      <Route path="creercompte" element={<Creercompte />} />
-    </Routes>
-  );
+	return (
+		<Routes>
+			<Route path='/' element={<Home />} />
+			<Route path='mission' element={<Mission />} />
+			<Route path='programme' element={<Programme />} />
+			<Route path='observatoire' element={<Observatoire />} />
+			<Route path='noussoutenir' element={<NousSoutenir />} />
+			<Route path='apropos' element={<Apropos />} />
+			<Route path='seconnecter' element={<SeConnecter />} />
+			<Route path='creercompte' element={<Creercompte />} />
+		</Routes>
+	);
 };
 export default RouteIndex;

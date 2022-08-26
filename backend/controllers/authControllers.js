@@ -8,7 +8,7 @@ exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
 
   if (!name || !email || !password || !passwordConfirm) {
-    throw CustomError.UnauthenticatedError('Please provide all values');
+    throw new CustomError.UnauthenticatedError('Please provide all values');
   }
 
   const emailAlreadyExists = await User.findOne({ email });
@@ -36,8 +36,8 @@ exports.login = catchAsync(async (req, res, next) => {
     throw new CustomError.BadRequestError('Please includes all values');
   }
 
-  const user = await User.findOne({ email });
-  console.log(user);
+  const user = await User.findOne({ email }).select('+password');
+
   if (!user) {
     throw new CustomError.UnauthenticatedError('Your email is invalid');
   }
@@ -48,7 +48,7 @@ exports.login = catchAsync(async (req, res, next) => {
     throw new CustomError.UnauthenticatedError('Your password is invalid');
   }
 
-  const token = createJwt(password);
+  const token = createJwt(user._id);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

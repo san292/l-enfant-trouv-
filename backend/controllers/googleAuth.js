@@ -25,7 +25,6 @@ exports.googleSignin = async (req, res) => {
     }
 
     res.status(StatusCodes.OK).json(user);
-
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({
       msg: "You don't have gmail account",

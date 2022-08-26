@@ -7,7 +7,7 @@ function App() {
 	return (
 		<>
 			<BrowserRouter>
-				<GoogleAuthLogin />
+				{/* <GoogleAuthLogin /> */}
 				<Routes />
 			</BrowserRouter>
 		</>

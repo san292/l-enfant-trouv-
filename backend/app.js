@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
-const errorHandler = require('./middleware/error-handler');
-const notFound = require('./middleware/not-found');
+const errorHandler = require('./middleware/errorMiddleware/error-handler');
+const notFound = require('./middleware/errorMiddleware/not-found');
 require('colors');
 
-const authRouter = require('./routes/authRouter');
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 //Global middleware
 if (process.env.NODE_ENV === 'development') {
@@ -25,7 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //ROUTER
-app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 
 //ERROR MIDDLEWARE
 
