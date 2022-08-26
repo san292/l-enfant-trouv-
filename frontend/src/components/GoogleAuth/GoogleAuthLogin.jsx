@@ -1,6 +1,9 @@
 import { GoogleLogin } from '@react-oauth/google';
+import { useState } from 'react';
 
 const GoogleAuthLogin = () => {
+	const [user, setUser] = useState();
+	console.log(user);
 	const handleFetch = async (tokenId) => {
 		const res = await fetch('/api/v1/auth/google', {
 			method: 'POST',
@@ -13,22 +16,26 @@ const GoogleAuthLogin = () => {
 		});
 
 		const data = await res.json();
-		console.log(data);
+		setUser(data);
 	};
 
 	return (
 		<>
-			<GoogleLogin
-				onSuccess={(credentialResponse) => {
-					console.log(credentialResponse);
+			{user ? (
+				<h1>{user.name}</h1>
+			) : (
+				<GoogleLogin
+					onSuccess={(credentialResponse) => {
+						console.log(credentialResponse);
 
-					handleFetch(credentialResponse.credential);
-				}}
-				text='continue_with'
-				onError={() => {
-					console.log('Login Failed');
-				}}
-			/>
+						handleFetch(credentialResponse.credential);
+					}}
+					text='continue_with'
+					onError={() => {
+						console.log('Login Failed');
+					}}
+				/>
+			)}
 		</>
 	);
 };
