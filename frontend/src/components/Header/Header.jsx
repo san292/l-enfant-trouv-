@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { ImMenu } from 'react-icons/im';
 
 import { IoMdClose } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [phoneMenu, setPhoneMenu] = useState(false);
@@ -16,7 +17,7 @@ const Header = () => {
     const changeWidth = () => {
       setWidth(window.innerWidth);
       if (window.innerWidth > 768) {
-        console.log('ferme menu apres 500');
+        console.log('ferme menu apres 768');
         setPhoneMenu(false);
       }
     };
@@ -30,15 +31,15 @@ const Header = () => {
   return (
     <Wrapper>
       <nav>
-        <logo>LOGO</logo>
+        <Link to="/">LOGO</Link>
         {(phoneMenu || width > 768) && (
-          <div>
-            <ul>
-              {navLink.map((link, idx) => (
-                <li key={idx}>{link}</li>
-              ))}
-            </ul>
-          </div>
+          <ul>
+            {navLink.map((link, idx) => (
+              <Link key={idx} to={link.pathname}>
+                {link.name}
+              </Link>
+            ))}
+          </ul>
         )}
         <div>
           <Button color="#fff" name="je donne" />
@@ -78,35 +79,38 @@ const Wrapper = styled.header`
     justify-content: space-between;
     @media screen and (max-width: 768px) {
       flex-direction: column;
-      margin-top: 22rem;
-      color: white;
+      margin-top: 26rem;
+      color: red;
       padding-left: 0.4rem;
+      width: 50%;
     }
   }
-  li {
+  a {
+    color: rgb(100 116 139);
     list-style: none;
     margin-right: 30px;
     cursor: pointer;
+    a:hover {
+      color: #00ff00;
+      background-color: white;
+    }
     @media screen and (max-width: 768px) {
-      margin-top: 0.2rem;
+      margin-top: 0.3rem;
       padding: 4%;
       border-bottom: 1px;
       border-bottom: solid 1px;
-    }
-
-    li:hover {
-      color: #00ff00;
-      background-color: white;
-      color: #00ff00;
+      color: gray;
+      cursor: pointer;
     }
   }
+
   logo {
     background-color: #fff;
     padding: 1rem;
     color: #00ff00;
     border-radius: 10px 100px / 120px;
     cursor: pointer;
-    @media screen and (max-width: 769px) {
+    @media screen and (max-width: 768px) {
       margin-left: 0.1rem;
       position: fixed;
       left: 0.5rem;
@@ -121,7 +125,7 @@ const Wrapper = styled.header`
     border-radius: 10px;
     font-weight: 600;
     padding: 0.5rem;
-    color: lime;
+    color: rgb(100 116 139);
     font-size: 1rem;
     cursor: pointer;
     @media screen and (max-width: 768px) {
