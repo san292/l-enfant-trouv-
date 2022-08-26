@@ -7,8 +7,8 @@ const CustomError = require('../error');
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
 
-  if (!name || !email || !password) {
-    throw Error('Please provide all values');
+  if (!name || !email || !password || !passwordConfirm) {
+    throw CustomError.UnauthenticatedError('Please provide all values');
   }
 
   const emailAlreadyExists = await User.findOne({ email });

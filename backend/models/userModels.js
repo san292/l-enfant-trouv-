@@ -21,6 +21,7 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide password'],
       minLength: 6,
+      select: false,
     },
     passwordConfirm: {
       type: String,
@@ -36,9 +37,19 @@ const UserSchema = mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    google: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
+
+UserSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  user.id = _id;
+  return user;
+};
 
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
