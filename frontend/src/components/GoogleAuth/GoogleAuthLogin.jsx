@@ -4,6 +4,7 @@ import { useState } from 'react';
 const GoogleAuthLogin = () => {
 	const [user, setUser] = useState();
 	console.log(user);
+	console.log(user?.name);
 	const handleFetch = async (tokenId) => {
 		const res = await fetch('/api/v1/auth/google', {
 			method: 'POST',
@@ -22,11 +23,11 @@ const GoogleAuthLogin = () => {
 	return (
 		<>
 			{user ? (
-				<h1>{user.name}</h1>
+				<h1>{user?.name}</h1>
 			) : (
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
-						console.log(credentialResponse);
+					
 
 						handleFetch(credentialResponse.credential);
 					}}
