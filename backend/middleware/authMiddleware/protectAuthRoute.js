@@ -19,7 +19,7 @@ module.exports = catchAsync(async (req, res, next) => {
     );
   }
 
-  const updateFreshUser = await currentUser.changesPasswordAfter(decoded.iat);
+  const updateCurrentUser = await currentUser.changesPasswordAfter(decoded.iat);
 
   if (updateCurrentUser) {
     throw new CustomError.BadRequestError(

@@ -71,7 +71,7 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 UserSchema.methods.changesPasswordAfter = async function (JWTTimeStamps) {
   if (this.createdAt) {
     const changeTimesStamp = parseInt(this.createdAt.getTime() / 1000, 10);
-    console.log(JWTTimeStamps < changeTimesStamp);
+
     return JWTTimeStamps < changeTimesStamp;
   }
 };
