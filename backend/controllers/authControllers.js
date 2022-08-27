@@ -16,8 +16,10 @@ exports.register = catchAsync(async (req, res, next) => {
   if (emailAlreadyExists) {
     throw new CustomError.BadRequestError('Email already exists');
   }
+  const isFirstAccount = (await User.countDocuments({})) === 0;
+  const role = isFirstAccount ? 'admin' : 'user';
 
-  const user = await User.create(req.body);
+  const user = await User.create({ ...req.body, role });
 
   const token = createJwt(user._id);
 
