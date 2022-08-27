@@ -1,9 +1,10 @@
 const User = require('../models/userModels');
 const catchAsync = require('../utils/catchAsync');
 const { StatusCodes } = require('http-status-codes');
-const { createJwt, createSendTokenCookies } = require('../utils/jwtHelpers');
+const { createSendTokenCookies } = require('../utils/jwtHelpers');
 const CustomError = require('../error');
 const crypto = require('crypto');
+const sendVerificationEmail = require('../utils/email/sendVerificationEmail');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -22,6 +23,15 @@ exports.register = catchAsync(async (req, res, next) => {
 
   const verificationToken = crypto.randomBytes(40).toString('hex');
   const user = await User.create({ ...req.body, role, verificationToken });
+
+  const origin = 'http://localhost:3000';
+
+  await sendVerificationEmail({
+    name: user.name,
+    email: user.email,
+    verificationToken: user.verificationToken,
+    origin,
+  });
 
   res.status(StatusCodes.OK).json({
     status: 'Success',
@@ -42,11 +52,12 @@ exports.register = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyEmail = catchAsync(async (req, res) => {
-  const { verificationToken, email, password, passwordConfirm } = req.body;
+  const { verificationToken, email } = req.body;
 
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'
   );
+
   if (!user) {
     throw new CustomError.UnauthenticatedError('Verification failed');
   }
@@ -56,7 +67,7 @@ exports.verifyEmail = catchAsync(async (req, res) => {
   }
 
   user.isVerified = true;
-  user.verified = Date.now();
+  user.verified = user.updateAt;
   user.verificationToken = '';
 
   await user.save();
