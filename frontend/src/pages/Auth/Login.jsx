@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const initialState = {
@@ -21,18 +21,23 @@ const Login = () => {
 		setValues({ ...values, [name]: value });
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true);
+
 		try {
-			async function handleFecth() {
-				const { data } = await axios.post('/api/v1/auth/login');
-			}
+			const { data } = await axios.post('/api/v1/auth/login', loginUser);
+
+			console.log(data);
 		} catch (error) {
-			setLoading(false);
 			setError(error.message);
 		}
 	};
+	if (loading) {
+		return <h1>...Loading</h1>;
+	}
+	if (error) {
+		return <h1>{error}</h1>;
+	}
 
 	return (
 		<Wrapper>

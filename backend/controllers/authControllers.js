@@ -1,10 +1,12 @@
 const User = require('../models/userModels');
+const Token = require('../models/Token');
 const catchAsync = require('../utils/catchAsync');
 const { StatusCodes } = require('http-status-codes');
 const { createSendTokenCookies } = require('../utils/jwtHelpers');
 const CustomError = require('../error');
 const crypto = require('crypto');
 const sendVerificationEmail = require('../utils/email/sendVerificationEmail');
+const createTokenUser = require('../utils/createTokenUser');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -83,7 +85,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select('+password');
-
+  console.log(user);
   if (!user) {
     throw new CustomError.UnauthenticatedError('Your email is invalid');
   }
@@ -91,12 +93,30 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user.isVerified) {
     throw new CustomError.UnauthenticatedError('Please verify your email');
   }
-
+  console.log(password)
   const isMatchPassword = await user.comparePassword(password);
-
+  console.log(isMatchPassword)
   if (!isMatchPassword) {
     throw new CustomError.UnauthenticatedError('Your password is invalid');
   }
 
-  createSendTokenCookies(user, StatusCodes.CREATED, res);
+  // const tokenUser = createTokenUser(user);
+
+  let refreshToken = '';
+
+  refreshToken = crypto.randomBytes(40).toString('hex');
+
+  const userAgent = req.headers['user-agent'];
+  const ip = req.ip;
+  const userToken = {
+    refreshToken,
+    ip,
+    userAgent,
+    user: user._id,
+  };
+
+  await Token.create(userToken);
+  createSendTokenCookies(user, StatusCodes.OK, res, refreshToken);
+
+  res.status(StatusCodes.OK).json({ user });
 });
