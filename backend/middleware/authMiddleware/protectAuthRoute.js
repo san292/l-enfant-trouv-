@@ -3,30 +3,40 @@ const User = require('../../models/userModels');
 const { isTokenValid } = require('../../utils/jwtHelpers');
 const CustomError = require('../../error');
 
-module.exports = catchAsync(async (req, res, next) => {
-  let token;
+// module.exports = catchAsync(async (req, res, next) => {
+//   let token;
 
-  if (req.headers && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  }
+//   if (req.headers && req.headers.authorization.startsWith('Bearer')) {
+//     token = req.headers.authorization.split(' ')[1];
+//   }
 
-  const decoded = isTokenValid(token);
-  const currentUser = await User.findById(decoded.payload);
+//   const decoded = isTokenValid(token);
+//   const currentUser = await User.findById(decoded.payload);
 
-  if (!currentUser) {
-    throw new CustomError.UnauthenticatedError(
-      'The user belonging this token, does not exists'
-    );
-  }
+//   if (!currentUser) {
+//     throw new CustomError.UnauthenticatedError(
+//       'The user belonging this token, does not exists'
+//     );
+//   }
 
-  const updateCurrentUser = await currentUser.changesPasswordAfter(decoded.iat);
+//   const updateCurrentUser = await currentUser.changesPasswordAfter(decoded.iat);
 
-  if (updateCurrentUser) {
-    throw new CustomError.BadRequestError(
-      'User recently changed password,Please log again'
-    );
-  }
-  req.user = currentUser;
+//   if (updateCurrentUser) {
+//     throw new CustomError.BadRequestError(
+//       'User recently changed password,Please log again'
+//     );
+//   }
+//   req.user = currentUser;
 
-  next();
-});
+//   next();
+// });
+
+const authenticateUser = async (req, res, next) => {
+  const { refreshToken, accessToken } = req.signedCookies;
+
+  console.log(refreshToken, accessToken);
+};
+
+module.exports = {
+  authenticateUser,
+};

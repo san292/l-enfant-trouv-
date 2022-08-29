@@ -85,7 +85,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select('+password');
-  console.log(user);
+
   if (!user) {
     throw new CustomError.UnauthenticatedError('Your email is invalid');
   }
@@ -93,9 +93,10 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user.isVerified) {
     throw new CustomError.UnauthenticatedError('Please verify your email');
   }
-  console.log(password)
+  const tokenUser = createTokenUser(user);
+
   const isMatchPassword = await user.comparePassword(password);
-  console.log(isMatchPassword)
+
   if (!isMatchPassword) {
     throw new CustomError.UnauthenticatedError('Your password is invalid');
   }
@@ -103,6 +104,19 @@ exports.login = catchAsync(async (req, res, next) => {
   // const tokenUser = createTokenUser(user);
 
   let refreshToken = '';
+
+  const existingToken = await Token.findOne(user._id);
+
+  if (existingToken) {
+    const { isValid } = existingToken;
+    if (!isValid) {
+      throw new CustomError.UnauthenticatedError('Invalid Credentials');
+    }
+    refreshToken = existingToken.refreshToken;
+    createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
+    res.status(StatusCodes.OK).json({ user: tokenUser });
+    return;
+  }
 
   refreshToken = crypto.randomBytes(40).toString('hex');
 
@@ -116,7 +130,7 @@ exports.login = catchAsync(async (req, res, next) => {
   };
 
   await Token.create(userToken);
-  createSendTokenCookies(user, StatusCodes.OK, res, refreshToken);
+  createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
 
   res.status(StatusCodes.OK).json({ user });
 });
