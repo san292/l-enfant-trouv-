@@ -105,7 +105,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
   let refreshToken = '';
 
-  const existingToken = await Token.findOne(user._id);
+  const existingToken = await Token.findOne({ user: user._id });
+  console.log(existingToken, user);
 
   if (existingToken) {
     const { isValid } = existingToken;

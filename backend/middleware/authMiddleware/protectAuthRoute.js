@@ -1,7 +1,12 @@
 const catchAsync = require('../../utils/catchAsync');
-const User = require('../../models/userModels');
-const { isTokenValid } = require('../../utils/jwtHelpers');
+
+const Token = require('../../models/Token');
+const {
+  isTokenValid,
+  createSendTokenCookies,
+} = require('../../utils/jwtHelpers');
 const CustomError = require('../../error');
+const { StatusCodes } = require('http-status-codes');
 
 // module.exports = catchAsync(async (req, res, next) => {
 //   let token;
@@ -31,11 +36,33 @@ const CustomError = require('../../error');
 //   next();
 // });
 
-const authenticateUser = async (req, res, next) => {
+const authenticateUser = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
+  try {
+    if (accessToken) {
+      const payload = isTokenValid(accessToken);
+      req.user = payload.user;
+    }
+    const payload = isTokenValid(refreshToken);
+    console.log(payload.user.user);
+    const existingToken = await Token.findOne({
+      user: payload.user.user,
+    });
+    console.log(existingToken);
+    if (!existingToken || !existingToken?.isValid) {
+      throw new CustomError.UnauthenticatedError('Authentication Invalid');
+    }
 
-  console.log(refreshToken, accessToken);
-};
+    createSendTokenCookies(payload.user, StatusCodes, res, existingToken);
+
+    req.user = payload.user;
+  } catch (error) {
+    console.log(error.message);
+    throw new CustomError.UnauthenticatedError('Authentication Invalid');
+  }
+
+  next();
+});
 
 module.exports = {
   authenticateUser,

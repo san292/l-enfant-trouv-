@@ -20,10 +20,12 @@ const createSendTokenCookies = (user, statusCode, res, refreshToken) => {
   const cookiesOptionsShort = {
     httpOnly: true,
     expires: new Date(Date.now() + shortExp),
+    signed: true,
   };
   const cookiesOptionsLong = {
     httpOnly: true,
     expires: new Date(Date.now() + longerExp),
+    signed: true,
   };
 
   if (process.env.NODE_ENV === 'production') cookiesOptionsShort.secure = true;
