@@ -46,6 +46,7 @@ export default function Creercompte() {
       [e.target.name]: e.target.value
     }));
   };
+  console.log('hhvhjvhvhvvvh', formData);
   const hendelSubmit = (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) {
@@ -54,9 +55,11 @@ export default function Creercompte() {
       const userData = {
         name,
         email,
-        password
+        password,
+        passwordConfirm
       };
       dispatch(register(userData));
+      navigate('/seconnecter');
     }
   };
 
@@ -68,7 +71,7 @@ export default function Creercompte() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          S'enregistrer
         </Typography>
         <form className={classes.form} onSubmit={hendelSubmit}>
           <Grid container spacing={2}>
@@ -80,7 +83,7 @@ export default function Creercompte() {
                 required
                 fullWidth
                 id="name"
-                label="Nom"
+                label="name"
                 autoFocus
                 onChange={handelChange}
               />
@@ -104,7 +107,7 @@ export default function Creercompte() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -117,7 +120,7 @@ export default function Creercompte() {
                 required
                 fullWidth
                 name="passwordConfirm"
-                label="confirmer mot de passe"
+                label="passwordConfirm"
                 type="password"
                 id="passwordConfirm"
                 autoComplete="current-password"
