@@ -17,10 +17,25 @@ export const loginUser = createAsyncThunk(
 	'user/loginUser',
 	async (user, thunkAPI) => {
 		try {
-			const res = await customFecth.post('/auth/login', user);
-			console.log(res);
-			return res.data;
+			const { data } = await customFecth.post('/auth/login', user);
+
+			return data;
 		} catch (error) {
+			console.log(error);
+			return thunkAPI.rejectWithValue(error.response.data.msg);
+		}
+	}
+);
+
+export const verifyEmail = createAsyncThunk(
+	'user/verifyEmail',
+	async (user, thunkAPI) => {
+		console.log(user);
+		try {
+			const res = await customFecth.post('/auth/verify-email', user);
+			console.log(res);
+		} catch (error) {
+			console.log(error);
 			return thunkAPI.rejectWithValue(error.response.data.msg);
 		}
 	}

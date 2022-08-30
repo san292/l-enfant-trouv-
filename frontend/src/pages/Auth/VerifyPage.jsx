@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { verifyEmail } from '../../features/user/userThunk';
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -11,17 +12,20 @@ const VerifyPage = () => {
 	const [error, setError] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const query = useQuery();
+	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state.user);
 
 	const verifyToken = async () => {
 		setLoading(true);
 		try {
-			const { data } = await axios.post('/api/v1/auth/verify-email', {
+			const userData = {
 				verificationToken: query.get('token'),
 				email: query.get('email'),
-			});
-			console.log(data);
+			};
+			console.log(userData);
+			dispatch(verifyEmail(userData));
 		} catch (error) {
-			// console.log(error.response);
+			console.log(error.response);
 			setError(true);
 		}
 		setLoading(false);

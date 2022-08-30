@@ -55,7 +55,7 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken, email } = req.body;
-
+  console.log(req.body);
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'
   );
@@ -115,7 +115,9 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     refreshToken = existingToken.refreshToken;
     createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
-    res.status(StatusCodes.OK).json({ user: tokenUser });
+    res
+      .status(StatusCodes.OK)
+      .json({ user: tokenUser, msg: 'You are connected' });
     return;
   }
 
@@ -133,5 +135,5 @@ exports.login = catchAsync(async (req, res, next) => {
   await Token.create(userToken);
   createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
 
-  res.status(StatusCodes.OK).json({ user });
+  res.status(StatusCodes.OK).json({ user, msg: 'You are connected' });
 });
