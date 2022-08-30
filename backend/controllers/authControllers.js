@@ -6,11 +6,11 @@ const CustomError = require('../error');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
+  console.log('reqbody----------------->', req.body);
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !passwordConfirm) {
     throw Error('Please provide all values');
   }
-
   const emailAlreadyExists = await User.findOne({ email });
 
   if (emailAlreadyExists) {
