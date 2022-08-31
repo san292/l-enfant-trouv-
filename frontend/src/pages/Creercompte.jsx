@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { register, reset } from '../features/auth/authSlice';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import axiosConfig from '../api/configAxios';
-import { useNavigate } from 'react-router-dom';
 
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -15,30 +18,48 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 export default function Creercompte() {
-  let navigate = useNavigate();
+  const [formData, setformData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: ''
+  });
+  const { name, email, password, passwordConfirm } = formData;
   const classes = useStyles();
-
-  const handelSubmit = async (e) => {
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, isError, isSucces, message } = useSelector(
+    (state) => state.auth
+  );
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSucces || user) {
+      navigate('/seconnecter');
+    }
+    dispatch(reset);
+  }, [user, isError, isSucces, message, navigate, dispatch]);
+  const handelChange = (e) => {
+    setformData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
+  };
+  console.log('hhvhjvhvhvvvh', formData);
+  const hendelSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, passwordConfirm } = e.target.elements;
-
-    let dataRegister = {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      passwordConfirm: passwordConfirm.value
-    };
-    console.log('mounieeeeeeeeeer', dataRegister);
-
-    try {
-      const register = await axiosConfig.post(
-        'http://localhost:8000/api/v1/auth/register',
-        dataRegister
-      );
-      navigate('/SeConnecter');
-      console.log('utilisateur bien créé', register);
-    } catch (error) {
-      console.log('erreuuuuuuuur', error);
+    if (password !== passwordConfirm) {
+      toast.error('les deux mot de passe doivent être identique');
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+        passwordConfirm
+      };
+      dispatch(register(userData));
+      navigate('/seconnecter');
     }
   };
 
@@ -50,20 +71,21 @@ export default function Creercompte() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          S'enregistrer
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handelSubmit}>
+        <form className={classes.form} onSubmit={hendelSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="Name"
+                autoComplete="name"
                 name="name"
                 variant="outlined"
                 required
                 fullWidth
                 id="name"
-                label="Nom"
+                label="name"
                 autoFocus
+                onChange={handelChange}
               />
             </Grid>
 
@@ -76,6 +98,7 @@ export default function Creercompte() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handelChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -84,10 +107,11 @@ export default function Creercompte() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handelChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,10 +120,11 @@ export default function Creercompte() {
                 required
                 fullWidth
                 name="passwordConfirm"
-                label="confirmer mot de passe"
+                label="passwordConfirm"
                 type="password"
                 id="passwordConfirm"
                 autoComplete="current-password"
+                onChange={handelChange}
               />
             </Grid>
           </Grid>
