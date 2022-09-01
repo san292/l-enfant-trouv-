@@ -21,6 +21,7 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide password'],
       minLength: 6,
+      select: false,
     },
     passwordConfirm: {
       type: String,
@@ -36,9 +37,25 @@ const UserSchema = mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    google: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    // verified: Date,
   },
   { timestamps: true }
 );
+
+UserSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  user.id = _id;
+  return user;
+};
 
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
@@ -52,10 +69,17 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {
-  console.log(candidatePassword, this.password);
   const isMatch = await bcrypt.compare(candidatePassword, this.password);
 
   return isMatch;
+};
+
+UserSchema.methods.changesPasswordAfter = async function (JWTTimeStamps) {
+  if (this.createdAt) {
+    const changeTimesStamp = parseInt(this.createdAt.getTime() / 1000, 10);
+
+    return JWTTimeStamps < changeTimesStamp;
+  }
 };
 
 const User = mongoose.model('User', UserSchema);
