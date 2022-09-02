@@ -1,12 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from '../pages/Home';
-import Mission from '../pages/Mission';
-import Programme from '../pages/Programme';
-import Observatoire from '../pages/Observatoire';
-import NousSoutenir from '../pages/NousSoutenir';
-import Apropos from '../pages/Apropos';
-import SeConnecter from '../pages/SeConnecter';
-import Creercompte from '../pages/Creercompte';
+import {
+	Home,
+	Programme,
+	Observatoire,
+	NousSoutenir,
+	Mission,
+	Apropos,
+	SeConnecter,
+	Creercompte,
+} from '../pages';
 import VerifyPage from '../pages/Auth/VerifyPage';
 import Login from '../pages/Auth/Login';
 
