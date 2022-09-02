@@ -141,7 +141,7 @@ exports.logout = catchAsync(async (req, res, next) => {
   console.log(req);
   res.cookie('accessToken', 'logout', {
     httpOnly: true,
-    expires: new Date(Date.now() + 1000),
+    expires: new Date(Date.now() + 20),
   });
   res.cookie('refreshToken', 'logout', {
     httpOnly: true,
