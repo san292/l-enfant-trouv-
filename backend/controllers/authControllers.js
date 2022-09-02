@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const sendVerificationEmail = require('../utils/email/sendVerificationEmail');
 const sendResetPassswordEmail = require('../utils/email/sendResetPassword');
 const createTokenUser = require('../utils/createTokenUser');
+const createHash = require('../utils/createHash');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -182,7 +183,7 @@ exports.forgortPassword = catchAsync(async (req, res, next) => {
     const tenMinutes = 1000 * 60 * 10;
     const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
 
-    user.passwordToken = passwordToken;
+    user.passwordToken = createHash(passwordToken);
     user.passwordTokenExpirationDate = passwordTokenExpirationDate;
 
     await user.save();
@@ -206,7 +207,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   if (user) {
     const currentDate = new Date();
     if (
-      user.passwordToken === token &&
+      user.passwordToken === createHash(token) &&
       user.passwordTokenExpirationDate > currentDate
     ) {
       user.password = password;
