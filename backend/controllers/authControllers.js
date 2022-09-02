@@ -1,17 +1,25 @@
 const User = require('../models/userModels');
+const Token = require('../models/Token');
 const catchAsync = require('../utils/catchAsync');
 const { StatusCodes } = require('http-status-codes');
-const { createJwt } = require('../utils/jwtHelpers');
+const { createSendTokenCookies } = require('../utils/jwtHelpers');
 const CustomError = require('../error');
+const crypto = require('crypto');
+const sendVerificationEmail = require('../utils/email/sendVerificationEmail');
+const createTokenUser = require('../utils/createTokenUser');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
   console.log('reqbody----------------->', req.body);
 
   if (!name || !email || !password || !passwordConfirm) {
+<<<<<<< HEAD
 
     throw new CustomError.UnauthenticatedError('Please provide all values');
 
+=======
+    throw Error('Please provide all values');
+>>>>>>> d5dec0e7e1fa848c3ff0022a750beb33e76ab2f9
   }
   const emailAlreadyExists = await User.findOne({ email });
 
@@ -21,18 +29,60 @@ exports.register = catchAsync(async (req, res, next) => {
   const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? 'admin' : 'user';
 
-  const user = await User.create({ ...req.body, role });
+  const verificationToken = crypto.randomBytes(40).toString('hex');
+  const user = await User.create({ ...req.body, role, verificationToken });
 
-  const token = createJwt(user._id);
+  const origin = 'http://localhost:3000';
 
-  res.status(StatusCodes.CREATED).json({
-    status: 'success',
-    token,
-    data: {
-      user,
-    },
+  await sendVerificationEmail({
+    name: user.name,
+    email: user.email,
+    verificationToken: user.verificationToken,
+    origin,
   });
+
+  res.status(StatusCodes.OK).json({
+    status: 'Success',
+    msg: 'Please verify your email!',
+    verificationToken,
+  });
+  // const user = await User.create({ ...req.body, role });
+
+  // const token = createJwt(user._id);
+
+  // res.status(StatusCodes.CREATED).json({
+  //   status: 'success',
+  //   token,
+  //   data: {
+  //     user,
+  //   },
+  // });
 });
+
+exports.verifyEmail = catchAsync(async (req, res) => {
+  const { verificationToken, email } = req.body;
+
+  const user = await User.findOne({ email }).select(
+    '-password -passwordConfirm'
+  );
+
+  if (!user) {
+    throw new CustomError.UnauthenticatedError('Verification failed');
+  }
+
+  if (user.verificationToken !== verificationToken) {
+    throw new CustomError.UnauthenticatedError('Verification failed');
+  }
+
+  user.isVerified = true;
+  user.verified = user.updateAt;
+  user.verificationToken = '';
+
+  await user.save();
+
+  res.status(StatusCodes.OK).json({ msg: 'Email verified' });
+});
+
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -46,19 +96,48 @@ exports.login = catchAsync(async (req, res, next) => {
     throw new CustomError.UnauthenticatedError('Your email is invalid');
   }
 
+  if (!user.isVerified) {
+    throw new CustomError.UnauthenticatedError('Please verify your email');
+  }
+  const tokenUser = createTokenUser(user);
+
   const isMatchPassword = await user.comparePassword(password);
 
   if (!isMatchPassword) {
     throw new CustomError.UnauthenticatedError('Your password is invalid');
   }
 
-  const token = createJwt(user._id);
+  // const tokenUser = createTokenUser(user);
 
-  res.status(StatusCodes.OK).json({
-    status: 'success',
-    token,
-    data: {
-      user,
-    },
-  });
+  let refreshToken = '';
+
+  const existingToken = await Token.findOne({ user: user._id });
+  console.log(existingToken, user);
+
+  if (existingToken) {
+    const { isValid } = existingToken;
+    if (!isValid) {
+      throw new CustomError.UnauthenticatedError('Invalid Credentials');
+    }
+    refreshToken = existingToken.refreshToken;
+    createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
+    res.status(StatusCodes.OK).json({ user: tokenUser });
+    return;
+  }
+
+  refreshToken = crypto.randomBytes(40).toString('hex');
+
+  const userAgent = req.headers['user-agent'];
+  const ip = req.ip;
+  const userToken = {
+    refreshToken,
+    ip,
+    userAgent,
+    user: user._id,
+  };
+
+  await Token.create(userToken);
+  createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
+
+  res.status(StatusCodes.OK).json({ user });
 });
