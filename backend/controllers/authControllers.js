@@ -10,16 +10,9 @@ const createTokenUser = require('../utils/createTokenUser');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
-  console.log('reqbody----------------->', req.body);
 
   if (!name || !email || !password || !passwordConfirm) {
-<<<<<<< HEAD
-
     throw new CustomError.UnauthenticatedError('Please provide all values');
-
-=======
-    throw Error('Please provide all values');
->>>>>>> d5dec0e7e1fa848c3ff0022a750beb33e76ab2f9
   }
   const emailAlreadyExists = await User.findOne({ email });
 
@@ -61,7 +54,7 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken, email } = req.body;
-  console.log(req.body);
+
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'
   );
@@ -112,7 +105,6 @@ exports.login = catchAsync(async (req, res, next) => {
   let refreshToken = '';
 
   const existingToken = await Token.findOne({ user: user._id });
-  console.log(existingToken, user);
 
   if (existingToken) {
     const { isValid } = existingToken;
@@ -142,4 +134,18 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
 
   res.status(StatusCodes.OK).json({ user, msg: 'You are connected' });
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  // await Token.findOneAndDelete({ user: req.user.userId });
+  console.log(req);
+  res.cookie('accessToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+  res.cookie('refreshToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: 'user logged out' });
 });
