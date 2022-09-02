@@ -48,7 +48,7 @@ const authenticateUser = catchAsync(async (req, res, next) => {
     const existingToken = await Token.findOne({
       user: payload.user.user,
     });
-    
+
     if (!existingToken || !existingToken?.isValid) {
       throw new CustomError.UnauthenticatedError('Authentication Invalid');
     }
