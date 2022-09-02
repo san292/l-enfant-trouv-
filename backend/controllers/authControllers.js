@@ -193,5 +193,28 @@ exports.forgortPassword = catchAsync(async (req, res, next) => {
     .json({ msg: 'Please check your email for reset password link ' });
 });
 exports.resetPassword = catchAsync(async (req, res, next) => {
+  const { token, email, password } = req.body;
+
+  if (!token || !email || !password) {
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+
+  const user = await User.findOne({ email }).select(
+    '-password -passwordConfirm'
+  );
+
+  if (user) {
+    const currentDate = new Date();
+    if (
+      user.passwordToken === token &&
+      user.passwordTokenExpirationDate > currentDate
+    ) {
+      user.password = password;
+      user.passwordToken = null;
+      user.passwordTokenExpirationDate = null;
+      await user.save();
+    }
+  }
+
   res.send('reset password');
 });
