@@ -34,7 +34,7 @@ export default function SignInSide() {
         'http://localhost:8000/api/v1/auth/login',
         loginData
       );
-      let result = response.data;
+      let result = response.data.data;
       console.log('vous connecté bien connecté', result);
       navigate('/');
     } catch (error) {
