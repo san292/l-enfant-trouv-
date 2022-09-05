@@ -13,13 +13,7 @@ exports.register = catchAsync(async (req, res, next) => {
   console.log('reqbody----------------->', req.body);
 
   if (!name || !email || !password || !passwordConfirm) {
-<<<<<<< HEAD
-
     throw new CustomError.UnauthenticatedError('Please provide all values');
-
-=======
-    throw Error('Please provide all values');
->>>>>>> d5dec0e7e1fa848c3ff0022a750beb33e76ab2f9
   }
   const emailAlreadyExists = await User.findOne({ email });
 
