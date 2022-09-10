@@ -1,7 +1,7 @@
 export const navLink = [
   {
     pathname: '/',
-    name: 'Home'
+    name: 'Accueil'
   },
   {
     pathname: 'mission',
@@ -9,19 +9,19 @@ export const navLink = [
   },
   {
     pathname: 'programme',
-    name: 'Program'
+    name: 'Programme'
   },
   {
     pathname: 'observatoire',
-    name: 'Observatory '
+    name: 'Observatoire '
   },
   {
     pathname: 'Noussoutenir',
-    name: 'Help Us'
+    name: 'Nous soutenir'
   },
-  { pathname: 'apropos', name: 'About' },
+  { pathname: 'apropos', name: 'A propos' },
   {
     pathname: 'seconnecter',
-    name: 'login'
+    name: 'Se connecter'
   }
 ];

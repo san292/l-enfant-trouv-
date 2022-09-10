@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import childPhoto from '../../UI/images/child.jpg';
-import Button from '../../UI/button/Button';
+import { Button } from '../../UI/form/Button';
 
 const Main = () => {
   return (
