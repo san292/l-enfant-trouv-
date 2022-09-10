@@ -39,6 +39,7 @@ app.get('/hello', (req, res) => {
 //ROUTER
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.get('/api/config/paypal',(req,res)=> res.send(process.env.PAYPAL_CLIENT_ID))
 
 //ERROR MIDDLEWARE
 
