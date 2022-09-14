@@ -5,15 +5,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-	return (
-		<>
-			<BrowserRouter>
-				{/* <Header /> */}
-				<Routes />
-				<ToastContainer />
-			</BrowserRouter>
-		</>
-	);
+  return (
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes />
+        <ToastContainer />
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;

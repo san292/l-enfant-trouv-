@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../../UI/button/Button';
+
+import { Button } from '../../UI/form/Button';
 import { navLink } from './links';
 import styled from 'styled-components';
 import { ImMenu } from 'react-icons/im';
@@ -16,7 +17,7 @@ const Header = () => {
   useEffect(() => {
     const changeWidth = () => {
       setWidth(window.innerWidth);
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 767) {
         console.log('ferme menu apres 768');
         setPhoneMenu(false);
       }
@@ -32,6 +33,7 @@ const Header = () => {
     <Wrapper>
       <nav>
         <Link to="/">LOGO</Link>
+
         {(phoneMenu || width > 768) && (
           <ul>
             {navLink.map((link, idx) => (
@@ -42,9 +44,8 @@ const Header = () => {
           </ul>
         )}
         <div>
-          <Button color="#fff" name="je donne" />
+          <Button>je donne</Button>
         </div>
-
         {/* Phone Menu */}
       </nav>
       <menu>
@@ -89,12 +90,14 @@ const Wrapper = styled.header`
     color: rgb(100 116 139);
     list-style: none;
     margin-right: 30px;
+    padding: 0.3em;
     cursor: pointer;
-    a:hover {
-      color: #00ff00;
-      background-color: white;
+    &:hover {
+      color: white;
+      background-color: gray;
+      border-radius: 10px;
     }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 767px) {
       margin-top: 0.3rem;
       padding: 4%;
       border-bottom: 1px;
@@ -110,7 +113,7 @@ const Wrapper = styled.header`
     color: #00ff00;
     border-radius: 10px 100px / 120px;
     cursor: pointer;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 767px) {
       margin-left: 0.1rem;
       position: fixed;
       left: 0.5rem;
@@ -121,16 +124,6 @@ const Wrapper = styled.header`
     padding: 0.4rem;
   }
   button {
-    border: 0.1rem solid white;
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 0.5rem;
-    color: rgb(100 116 139);
-    font-size: 1rem;
-    cursor: pointer;
-    @media screen and (max-width: 768px) {
-      display: none;
-    }
   }
   menu {
     position: absolute;
@@ -138,7 +131,7 @@ const Wrapper = styled.header`
     top: 30px;
     padding: 0.3rem;
     font-size: 1.2rem;
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 768px) {
       display: none;
     }
   }
