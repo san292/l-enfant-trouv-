@@ -38,6 +38,11 @@ body {
 	font-size: 0.875rem;
 	width: auto;
 }
+
+ul {
+	list-style-type: none;
+}
+
 a {
 	text-decoration: none;
 }
@@ -71,7 +76,6 @@ p {
 }
 
 @media screen and (min-width) {
-	
 	h1 {
 		font-size: 4rem;
 	}
