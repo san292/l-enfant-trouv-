@@ -1,6 +1,14 @@
 import styled from 'styled-components';
-const Input = ({ type, placeholder }) => {
-  return <StyledInput type={type} placeholder={placeholder} />;
+const Input = ({ type, placeholder, name, value, onChange }) => {
+  return (
+    <StyledInput
+      type={type}
+      placeholder={placeholder}
+      name={name}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export default Input;
@@ -14,18 +22,16 @@ const StyledInput = styled.input`
   padding: 1rem;
   border: none;
   outline: none;
-  color: #3c354e;
+  color: #717d7e;
   font-size: 1rem;
   font-weight: bold;
   &:focus {
     display: inline-block;
-    box-shadow: 0 0 0 0.2rem #b9abe0;
-    backdrop-filter: blur(12rem);
-    border-radius: 2rem;
+    box-shadow: 0 0 0 0.1em #e5e7e9;
   }
   &::placeholder {
     color: #d7bde2;
     font-weight: 100;
-    font-size: 1rem;
+    font-size: 1em;
   }
 `;

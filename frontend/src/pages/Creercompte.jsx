@@ -40,10 +40,11 @@ export default function Creercompte() {
     }
     dispatch(reset);
   }, [user, isError, isSucces, message, navigate, dispatch]);
-  const handelChange = (e) => {
+  const handelChange = ({ target }) => {
+    const { name, value } = target;
     setformData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
   };
   console.log('hhvhjvhvhvvvh', formData);
@@ -51,16 +52,9 @@ export default function Creercompte() {
     e.preventDefault();
     if (password !== passwordConfirm) {
       toast.error('les deux mot de passe doivent être identique');
-    } else {
-      const userData = {
-        name,
-        email,
-        password,
-        passwordConfirm
-      };
-      dispatch(register(userData));
-      navigate('/seconnecter');
     }
+    dispatch(register(formData));
+    navigate('/seconnecter');
   };
 
   return (

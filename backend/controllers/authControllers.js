@@ -10,7 +10,7 @@ const createTokenUser = require('../utils/createTokenUser');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
-  console.log('reqbody----------------->', req.body);
+  console.log('reqbody-authcontroller---------------->', req.body);
 
   if (!name || !email || !password || !passwordConfirm) {
     throw new CustomError.UnauthenticatedError('Please provide all values');
@@ -55,6 +55,9 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken, email } = req.body;
+  console.log('verication req.body ', req.body);
+  console.log('verication token ', verificationToken);
+  console.log('verication email ', email);
   console.log(req.body);
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'

@@ -1,5 +1,5 @@
 // import react
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import config axios
 import axiosConfig from '../api/configAxios';
@@ -18,21 +18,21 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // function for login
 export default function SignInSide() {
+  const initialState = {
+    email: '',
+    password: ''
+  };
   const classes = useStyles();
+  const { email, password } = formData;
   let navigate = useNavigate();
-
+  const [formData, setFormData] = useState(initialState);
   const handelSubmit = async (e) => {
     e.preventDefault();
 
-    const { email, password } = e.target.elements;
-    const loginData = {
-      email: email.value,
-      password: password.value
-    };
     try {
       const response = await axiosConfig.post(
         'http://localhost:8000/api/v1/auth/login',
-        loginData
+        formData
       );
       let result = response.data.data;
       console.log('vous connecté bien connecté', result);
@@ -64,6 +64,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
             />
             <TextField
               variant="outlined"
