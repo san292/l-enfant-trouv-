@@ -6,11 +6,12 @@ const { createSendTokenCookies } = require('../utils/jwtHelpers');
 const CustomError = require('../error');
 const crypto = require('crypto');
 const sendVerificationEmail = require('../utils/email/sendVerificationEmail');
+const sendResetPassswordEmail = require('../utils/email/sendResetPassword');
 const createTokenUser = require('../utils/createTokenUser');
+const createHash = require('../utils/createHash');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
-  console.log('reqbody----------------->', req.body);
 
   if (!name || !email || !password || !passwordConfirm) {
     throw new CustomError.UnauthenticatedError('Please provide all values');
@@ -55,7 +56,7 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken, email } = req.body;
-  console.log(req.body);
+
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'
   );
@@ -106,7 +107,6 @@ exports.login = catchAsync(async (req, res, next) => {
   let refreshToken = '';
 
   const existingToken = await Token.findOne({ user: user._id });
-  console.log(existingToken, user);
 
   if (existingToken) {
     const { isValid } = existingToken;
@@ -135,5 +135,87 @@ exports.login = catchAsync(async (req, res, next) => {
   await Token.create(userToken);
   createSendTokenCookies(tokenUser, StatusCodes.OK, res, refreshToken);
 
+  req.user = user;
+
   res.status(StatusCodes.OK).json({ user, msg: 'You are connected' });
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  console.log(req.user);
+  await Token.findOneAndDelete({ user: req.user.user });
+  console.log(req);
+  res.cookie('accessToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now() + 20),
+  });
+  res.cookie('refreshToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: 'user logged out' });
+});
+
+exports.forgortPassword = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw new CustomError.BadRequestError('Please provide valid email');
+  }
+
+  const user = await User.findOne({ email }).select(
+    '-password -passwordConfirm'
+  );
+
+  if (user) {
+    const passwordToken = crypto.randomBytes(70).toString('hex');
+
+    //send Email
+
+    const origin = 'http:localhost:3000';
+
+    await sendResetPassswordEmail({
+      name: user.name,
+      email: user.email,
+      token: passwordToken,
+      origin,
+    });
+
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+    user.passwordToken = createHash(passwordToken);
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+
+    await user.save();
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'Please check your email for reset password link ' });
+});
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const { token, email, password } = req.body;
+
+  if (!token || !email || !password) {
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+
+  const user = await User.findOne({ email }).select(
+    '-password -passwordConfirm'
+  );
+
+  if (user) {
+    const currentDate = new Date();
+    if (
+      user.passwordToken === createHash(token) &&
+      user.passwordTokenExpirationDate > currentDate
+    ) {
+      user.password = password;
+      user.passwordToken = null;
+      user.passwordTokenExpirationDate = null;
+      await user.save();
+    }
+  }
+
+  res.send('reset password');
 });
