@@ -5,54 +5,54 @@ import { useDispatch, useSelector } from 'react-redux';
 import { verifyEmail } from '../../features/user/userThunk';
 
 function useQuery() {
-	return new URLSearchParams(useLocation().search);
+  return new URLSearchParams(useLocation().search);
 }
 
 const VerifyPage = () => {
-	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const query = useQuery();
-	const dispatch = useDispatch();
-	const { user } = useSelector((state) => state.user);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const query = useQuery();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
-	const verifyToken = async () => {
-		setLoading(true);
-		try {
-			const userData = {
-				verificationToken: query.get('token'),
-				email: query.get('email'),
-			};
-			console.log(userData);
-			dispatch(verifyEmail(userData));
-		} catch (error) {
-			console.log(error.response);
-			setError(true);
-		}
-		setLoading(false);
-	};
+  const verifyToken = async () => {
+    setLoading(true);
+    try {
+      const userData = {
+        verificationToken: query.get('token'),
+        email: query.get('email')
+      };
+      console.log(userData);
+      dispatch(verifyEmail(userData));
+    } catch (error) {
+      console.log(error.response);
+      setError(true);
+    }
+    setLoading(false);
+  };
 
-	useEffect(() => {
-		verifyToken();
-	}, []);
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
-	if (loading) {
-		return <h2>Loading...</h2>;
-	}
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
 
-	if (error) {
-		return (
-			<h4>There was an error, please double check your verification link </h4>
-		);
-	}
+  if (error) {
+    return (
+      <h4>There was an error, please double check your verification link </h4>
+    );
+  }
 
-	return (
-		<>
-			<h2>Account Confirmed</h2>
-			<Link to='/login' className='btn'>
-				Please login
-			</Link>
-		</>
-	);
+  return (
+    <>
+      <h2>Account Confirmed</h2>
+      <Link to="/login" className="btn">
+        Please login
+      </Link>
+    </>
+  );
 };
 
 export default VerifyPage;

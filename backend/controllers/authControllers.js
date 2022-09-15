@@ -12,6 +12,10 @@ const createHash = require('../utils/createHash');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
+<<<<<<< HEAD
+  console.log('reqbody-authcontroller---------------->', req.body);
+=======
+>>>>>>> 87614fb0bc102df1ee0bb43f513e3a431fabc0c7
 
   if (!name || !email || !password || !passwordConfirm) {
     throw new CustomError.UnauthenticatedError('Please provide all values');
@@ -56,7 +60,14 @@ exports.register = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res) => {
   const { verificationToken, email } = req.body;
+<<<<<<< HEAD
+  console.log('verication req.body ', req.body);
+  console.log('verication token ', verificationToken);
+  console.log('verication email ', email);
+  console.log(req.body);
+=======
 
+>>>>>>> 87614fb0bc102df1ee0bb43f513e3a431fabc0c7
   const user = await User.findOne({ email }).select(
     '-password -passwordConfirm'
   );

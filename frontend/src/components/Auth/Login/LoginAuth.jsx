@@ -12,35 +12,32 @@ import { Button } from '../../../UI/form/Button';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ButtonContainer } from '../../../UI/form/ButtonContainer';
-import { loginUser } from '../../../features/user/userThunk';
+import { loginUser, verifyEmail } from '../../../features/user/userThunk';
 const Login = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const initialState = {
     email: '',
     password: ''
-  });
+  };
+  const dispatch = useDispatch();
+  const [data, setData] = useState(initialState);
   const { email, password } = data;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let loginData = {
-      email: e.target.value,
-      password: e.target.value
-    };
+    dispatch(verifyEmail(data.email));
+    // dispatch(loginUser(data));
+  };
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setData({ ...data, [name]: value });
+  };
 
-    dispatch(loginUser(loginData));
-  };
-  const handleChange = (e) => {
-    setData({
-      [e.target.name]: e.target.value
-    });
-  };
-  console.log('data------------->', data);
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FormTitle name="Se Connecter" />
       <InputContainer>
         <Input
+          name="email"
           type="email"
           placeholder="Email"
           required
@@ -48,11 +45,12 @@ const Login = () => {
           value={email}
         />
         <Input
+          name="password"
           type="password"
           placeholder="Password"
           required
           onChange={handleChange}
-          autocomplete="current-password"
+          autocomplete="new-password"
           value={password}
         />
       </InputContainer>
