@@ -31,7 +31,7 @@ const createSendTokenCookies = (user, statusCode, res, refreshToken) => {
   if (process.env.NODE_ENV === 'production') cookiesOptionsShort.secure = true;
   res.cookie('accessToken', token, cookiesOptionsShort);
   res.cookie('refreshToken', refreshTokenJWT, cookiesOptionsLong);
-
+ 
   // res.user.password = undefined;
 
   // res.status(statusCode).json({

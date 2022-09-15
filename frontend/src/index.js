@@ -10,11 +10,11 @@ import { store } from './features/store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
-      <App />
-    </GoogleOAuthProvider>
-  </Provider>
+	<Provider store={store}>
+		<GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
+			<App />
+		</GoogleOAuthProvider>
+	</Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
