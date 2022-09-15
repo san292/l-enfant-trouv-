@@ -8,12 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ButtonContainer } from '../../../UI/form/ButtonContainer';
 import { register } from '../../../features/auth/createAsyncThunk';
-import { verifyEmail } from '../../../features/user/userThunk';
 
 const initialState = {
-  email: 'moi@gmail.com',
-  password: 'moi123',
-  passwordConfirm: 'moi123'
+  email: '',
+  password: '',
+  passwordConfirm: ''
 };
 const Register = () => {
   const dispatch = useDispatch();

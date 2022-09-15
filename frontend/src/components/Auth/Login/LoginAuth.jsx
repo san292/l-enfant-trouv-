@@ -12,7 +12,7 @@ import { Button } from '../../../UI/form/Button';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ButtonContainer } from '../../../UI/form/ButtonContainer';
-import { loginUser, verifyEmail } from '../../../features/user/userThunk';
+import { login } from '../../../features/auth/createAsyncThunk';
 const Login = () => {
   const initialState = {
     email: '',
@@ -24,8 +24,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(verifyEmail(data.email));
-    // dispatch(loginUser(data));
+    dispatch(login(data));
   };
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -66,4 +65,3 @@ const Login = () => {
   );
 };
 export default Login;
-
