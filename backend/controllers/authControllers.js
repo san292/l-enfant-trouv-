@@ -12,10 +12,7 @@ const createHash = require('../utils/createHash');
 
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
-<<<<<<< HEAD
-  console.log('reqbody-authcontroller---------------->', req.body);
-=======
->>>>>>> 87614fb0bc102df1ee0bb43f513e3a431fabc0c7
+
 
   if (!name || !email || !password || !passwordConfirm) {
     throw new CustomError.UnauthenticatedError('Please provide all values');

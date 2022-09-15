@@ -9,6 +9,7 @@ export const register = createAsyncThunk(
     try {
       return await authService.register(user);
     } catch (error) {
+      console.log(error);
       const message =
         (error.response &&
           error.response.data &&
@@ -23,6 +24,7 @@ export const login = createAsyncThunk('auth/Login', async (user, thunkAPI) => {
   try {
     return await authService.login(user);
   } catch (error) {
+    console.log(error);
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
