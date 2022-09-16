@@ -7,8 +7,8 @@ import { Button } from '../../../UI/form/Button';
 import { useDispatch } from 'react-redux';
 import { ButtonContainer } from '../../../UI/form/ButtonContainer';
 import { register } from '../../../features/auth/createAsyncThunk';
-import { useForm } from '../../../Hooks/useForm';
 import { toast } from 'react-toastify';
+import { useForm } from '../../../Hooks/useForm';
 
 const initialState = {
   name: '',
@@ -16,24 +16,24 @@ const initialState = {
   password: '',
   passwordConfirm: ''
 };
+
 const Register = () => {
   const dispatch = useDispatch();
+  const hooksUsForm = useForm();
+  console.log('hooksUsForm', hooksUsForm);
 
-  const [data, setData] = useState(initialState);
-
-  const { name, email, password, passwordConfirm } = data;
+  const { name, email, password, passwordConfirm } = hooksUsForm.formState;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) {
       toast.error('les deux mots de passe doivent être identique !');
     }
-    dispatch(register(data));
+    dispatch(register(hooksUsForm.formState));
   };
 
   const handleChange = ({ target }) => {
-    const { name, value } = target;
-    setData({ ...data, [name]: value });
+    hooksUsForm.onInputChange({ target });
   };
 
   return (
