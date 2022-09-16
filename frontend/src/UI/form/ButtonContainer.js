@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 export const ButtonContainer = styled.div`
-  margin: 4rem 0 2rem 0;
+  margin: 1em;
   width: 100%;
   display: flex;
   align-items: center;
