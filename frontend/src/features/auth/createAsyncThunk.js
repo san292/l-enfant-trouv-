@@ -5,8 +5,6 @@ import authService from './authService';
 export const register = createAsyncThunk(
   'auth/register',
   async (user, thunkAPI) => {
-    console.log('holeeeeeeeeeeeee', user);
-    console.log('thunkAPI', thunkAPI);
     try {
       return await authService.register(user);
     } catch (error) {
@@ -16,6 +14,7 @@ export const register = createAsyncThunk(
   }
 );
 
+// Login User
 export const login = createAsyncThunk('auth/Login', async (user, thunkAPI) => {
   try {
     return await authService.login(user);
@@ -23,6 +22,8 @@ export const login = createAsyncThunk('auth/Login', async (user, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+// verifyEmail
 export const verifyEmail = createAsyncThunk(
   'user/verifyEmail',
   async (user, thunkAPI) => {
