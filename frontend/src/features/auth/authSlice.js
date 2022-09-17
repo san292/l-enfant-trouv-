@@ -24,8 +24,6 @@ export const authSlice = createSlice({
     },
     [register.fulfilled]: (state, { payload }) => {
       const { msg } = payload;
-      console.log('mesage', msg);
-      console.log('payload', payload);
       state.isLoading = false;
       toast.success(msg);
       state.user = payload;

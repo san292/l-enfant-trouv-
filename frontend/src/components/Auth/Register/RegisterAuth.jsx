@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormContainer, FormTitleH4 } from '../../../UI/form/FormContainer';
 import Input from '../../../UI/form/Input';
 import InputContainer from '../../../UI/form/InputContainer';
@@ -19,21 +19,24 @@ const initialState = {
 
 const Register = () => {
   const dispatch = useDispatch();
-  const hooksUsForm = useForm();
-  console.log('hooksUsForm', hooksUsForm);
-
-  const { name, email, password, passwordConfirm } = hooksUsForm.formState;
+  const {
+    onInputChange,
+    onResetForm,
+    formState,
+    name,
+    email,
+    password,
+    passwordConfirm
+  } = useForm(initialState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) {
       toast.error('les deux mots de passe doivent être identique !');
     }
-    dispatch(register(hooksUsForm.formState));
-  };
-
-  const handleChange = ({ target }) => {
-    hooksUsForm.onInputChange({ target });
+    console.log('formState--->', formState);
+    dispatch(register(formState));
+    onResetForm(initialState);
   };
 
   return (
@@ -46,7 +49,7 @@ const Register = () => {
             type="text"
             placeholder="Entrer votre nom"
             required
-            onChange={handleChange}
+            onChange={onInputChange}
             value={name}
           />
           <Input
@@ -54,7 +57,7 @@ const Register = () => {
             type="email"
             placeholder="Entrer votre Email"
             required
-            onChange={handleChange}
+            onChange={onInputChange}
             value={email}
           />
 
@@ -63,7 +66,7 @@ const Register = () => {
             type="password"
             placeholder="Entrer votre mot de passe"
             required
-            onChange={handleChange}
+            onChange={onInputChange}
             value={password}
             autocomplete="new-password"
           />
@@ -73,7 +76,7 @@ const Register = () => {
             type="password"
             placeholder="confirmer mot de passe"
             required
-            onChange={handleChange}
+            onChange={onInputChange}
             value={passwordConfirm}
             autocomplete="new-password"
           />
