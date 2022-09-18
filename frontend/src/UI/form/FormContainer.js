@@ -8,7 +8,7 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   height: 80vh;
   width: 30vw;
   margin: auto;
@@ -48,12 +48,19 @@ const FormContainer = styled.form`
 const FormTitle = ({ text }) => {
   return <FormTitleDynamic>{text}</FormTitleDynamic>;
 };
-const FormTitleDynamic = styled.h2`
-  margin: 2em 0 2em 0;
+const FormTitleDynamic = styled.h3`
+  color: black;
 `;
-const FormTitleH4 = styled.h3`
-  margin-top: 2em;
+const FormTitleH4 = styled.h4`
+  margin-top: 1em;
   color: #909497;
+  text-underline-offset: 0.2em;
+  background-size: 100% 0.1em, 0 0.1em;
+  &:hover {
+    text-underline-offset: 0.4em;
+    color: blue;
+    background-size: 0 0.1em, 100% 0.1em;
+  }
 `;
 
 export { FormContainer, FormTitle, FormTitleH4 };
