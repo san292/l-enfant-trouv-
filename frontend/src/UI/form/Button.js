@@ -12,7 +12,7 @@ const StyledButton = styled.button`
   height: 3em;
   border: none;
   color: white;
-  margin-top: 2em;
+  margin-top: 1em;
   border-radius: 2em;
   cursor: pointer;
 `;
