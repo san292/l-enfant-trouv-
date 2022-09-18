@@ -17,8 +17,8 @@ import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
   const initialState = {
-    email: 'yan@gmail.com',
-    password: 'yan123'
+    email: '',
+    password: ''
   };
 
   const { email, password, formState, onInputChange, onResetForm } =
@@ -29,6 +29,7 @@ const Login = () => {
     console.log('submitdata', formState);
     e.preventDefault();
     dispatch(login(formState));
+    onResetForm(initialState);
   };
 
   return (
