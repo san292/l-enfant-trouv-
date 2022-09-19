@@ -46,13 +46,37 @@ const VerifyPage = () => {
   }
 
   return (
-    <>
-      <h2>Account Confirmed</h2>
+    <Container>
+      <Title> Email verifié</Title>
       <Link to="/login" className="btn">
-        Please login
+        Cliquez ici pour vous connecter !
       </Link>
-    </>
+    </Container>
   );
 };
-
+const Title = styled.h2`
+  color: #27ae60;
+`;
+const Container = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  top: 5em;
+  right: 0;
+  left: 0;
+  height: 20em;
+  background: #ecf0f1;
+  && a {
+    color: blue;
+    text-decoration: underline 0.15em rgba(0, 0, 0, 1);
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 300ms, text-underline-offset 600ms;
+  }
+  a:hover {
+    text-decoration-color: rgba(0, 0, 255, 1);
+    text-underline-offset: 0.4em;
+  }
+`;
 export default VerifyPage;

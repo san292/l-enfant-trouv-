@@ -7,13 +7,13 @@ export const Button = ({ type, name }) => {
 const StyledButton = styled.button`
   background: linear-gradient(to right, #14163c 0%, #03217b 79%);
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
-  width: 65%;
-  height: 3rem;
+  letter-spacing: 0.2em;
+  width: 50%;
+  height: 3em;
   border: none;
   color: white;
-  margin-top: 2em;
-  border-radius: 2rem;
+  margin-top: 1em;
+  border-radius: 2em;
   cursor: pointer;
 `;
 // export default StyledButton;

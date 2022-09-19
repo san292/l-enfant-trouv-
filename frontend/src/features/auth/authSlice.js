@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { register, login } from './createAsyncThunk';
+import { toast } from 'react-toastify';
+import { verifyEmail } from '../user/userThunk';
 
 const initialState = {
-  user: null,
-  isError: false,
-  isSucces: false,
+  user: [],
   isLoading: false,
-  message: ''
+  msg: ''
 };
 
 export const authSlice = createSlice({
@@ -14,8 +14,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isError = false;
-      state.isSucces = false;
       state.isLoading = false;
       state.message = '';
     }
@@ -25,29 +23,43 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     [register.fulfilled]: (state, { payload }) => {
+      const { msg } = payload;
       state.isLoading = false;
-      state.isSuccess = true;
+      toast.success(msg);
       state.user = payload;
     },
     [register.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.isError = true;
-      state.message = payload;
       state.user = null;
+      const { msg } = payload;
+      toast.error(msg);
     },
     [login.pending]: (state) => {
       state.isLoading = true;
     },
     [login.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.isSuccess = true;
+      const { msg } = payload;
+      toast.success(msg);
       state.user = payload;
     },
     [login.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      state.isError = true;
-      state.message = payload;
+      const { msg } = payload;
+      toast.error(msg);
       state.user = null;
+    },
+    [verifyEmail.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [verifyEmail.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [verifyEmail.rejected]: (state, { payload }) => {
+      const { msg } = payload;
+      state.isLoading = false;
+      toast.error(msg);
     }
   }
 });
