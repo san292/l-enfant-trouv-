@@ -11,9 +11,9 @@ const createTokenUser = require('../utils/createTokenUser');
 const createHash = require('../utils/createHash');
 
 exports.register = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!name || !email || !password || !passwordConfirm) {
+  if (!name || !email || !password) {
     throw new CustomError.UnauthenticatedError('Please provide all values');
   }
   const emailAlreadyExists = await User.findOne({ email });
