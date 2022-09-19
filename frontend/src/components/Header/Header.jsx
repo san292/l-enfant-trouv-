@@ -1,138 +1,106 @@
-import React, { useState, useEffect } from 'react';
-
-import { Button } from '../../UI/form/Button';
 import { navLink } from './links';
 import styled from 'styled-components';
-import { ImMenu } from 'react-icons/im';
-
-import { IoMdClose } from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import { ImMenu } from 'react-icons/im';
+import AsideBar from './AsideBar';
+import { useState } from 'react';
 
-const Header = () => {
-  const [phoneMenu, setPhoneMenu] = useState(false);
-  const [width, setWidth] = useState('window.innerWidth');
-  const handelPhoneMenu = () => {
-    setPhoneMenu(!phoneMenu);
-  };
-  useEffect(() => {
-    const changeWidth = () => {
-      setWidth(window.innerWidth);
-      if (window.innerWidth > 767) {
-        console.log('ferme menu apres 768');
-        setPhoneMenu(false);
-      }
-    };
-    window.addEventListener('resize', changeWidth);
+const HeaderTest = () => {
+	const [toggleSideBar, setToggleSidebar] = useState(false);
 
-    return () => {
-      window.removeEventListener('resize', changeWidth);
-    };
-  }, []);
+	const handleToggleSidebar = () => {
+		setToggleSidebar(!toggleSideBar);
+	};
 
-  return (
-    <Wrapper>
-      <nav>
-        <Link to="/">LOGO</Link>
+	return (
+		<>
+			<Wrapper>
+				<div className='nav-center'>
+					<div className='nav-header'>
+						<Link to='/'>Logo</Link>
+						<button className='nav-btn'>
+							<ImMenu onClick={handleToggleSidebar} />
+						</button>
+					</div>
+					<ul className='nav-links'>
+						{navLink.map((link, idx) => {
+							const { pathname, name } = link;
 
-        {(phoneMenu || width > 768) && (
-          <ul>
-            {navLink.map((link, idx) => (
-              <Link key={idx} to={link.pathname}>
-                {link.name}
-              </Link>
-            ))}
-          </ul>
-        )}
-        <div>
-          <Button>je donne</Button>
-        </div>
-        {/* Phone Menu */}
-      </nav>
-      <menu>
-        {phoneMenu ? (
-          <IoMdClose className="text-white " onClick={handelPhoneMenu} />
-        ) : (
-          <ImMenu className="text-white" onClick={handelPhoneMenu} />
-        )}
-      </menu>
-    </Wrapper>
-  );
+							return (
+								<li key={idx}>
+									<Link to={pathname}>{name}</Link>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</Wrapper>
+
+			{toggleSideBar && (
+				<AsideBar
+					toggleBar={toggleSideBar}
+					handleToggleSidebar={handleToggleSidebar}
+				/>
+			)}
+		</>
+	);
 };
-export default Header;
 
-const Wrapper = styled.header`
-  background-color: #eee9e9;
-  position: fixed;
-  width: 100%;
+const Wrapper = styled.nav`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 5rem;
+	.nav-center {
+		width: 90vw;
+		margin: 0 auto;
+		max-width: 1170px;
+	}
+	.nav-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.nav-links {
+		display: none;
+	}
 
-  nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 5rem;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-  ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-      margin-top: 26rem;
-      color: red;
-      padding-left: 0.4rem;
-      width: 50%;
-    }
-  }
-  a {
-    color: rgb(100 116 139);
-    list-style: none;
-    margin-right: 30px;
-    padding: 0.3em;
-    cursor: pointer;
-    &:hover {
-      color: white;
-      background-color: gray;
-      border-radius: 10px;
-    }
-    @media screen and (max-width: 767px) {
-      margin-top: 0.3rem;
-      padding: 4%;
-      border-bottom: 1px;
-      border-bottom: solid 1px;
-      color: gray;
-      cursor: pointer;
-    }
-  }
+	.nav-btn {
+		background: transparent;
+		border: none;
+	}
 
-  logo {
-    background-color: #fff;
-    padding: 1rem;
-    color: #00ff00;
-    border-radius: 10px 100px / 120px;
-    cursor: pointer;
-    @media screen and (max-width: 767px) {
-      margin-left: 0.1rem;
-      position: fixed;
-      left: 0.5rem;
-    }
-  }
+	@media (min-width: 768px) {
+		.nav-btn {
+			display: none;
+		}
 
-  input:hover {
-    padding: 0.4rem;
-  }
-  button {
-  }
-  menu {
-    position: absolute;
-    right: 4px;
-    top: 30px;
-    padding: 0.3rem;
-    font-size: 1.2rem;
-    @media screen and (min-width: 768px) {
-      display: none;
-    }
-  }
+		.nav-center {
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.nav-links {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			li {
+				display: inline-block;
+				margin: 0 1rem;
+			}
+			a {
+				display: inline-block;
+				color: 'grey';
+				font-size: 0.65rem;
+				text-transform: capitalize;
+				letter-spacing: 0.25rem;
+				padding: 0.5rem;
+				/* &:hover {
+					border-bottom: 2px solid red;
+				} */
+			}
+		}
+	}
 `;
+export default HeaderTest;
