@@ -1,71 +1,89 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import {
-  FormContainer,
-  FormTitle,
-  FormTitleH4
-} from '../../../UI/form/FormContainer';
-import Input from '../../../UI/form/Input';
-import InputContainer from '../../../UI/form/InputContainer';
-import { HorizontalRule } from '../../../UI/form/HorizontalRule';
-import { Button } from '../../../UI/form/Button';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ButtonContainer } from '../../../UI/form/ButtonContainer';
-import { loginUser } from '../../../features/user/userThunk';
+import {
+  FormContainer,
+  FormTitleH4,
+  Input,
+  InputContainer,
+  HorizontalRule,
+  Button,
+  ButtonContainer
+} from '../../../UI/form';
+import styled from 'styled-components';
+import { useForm } from '../../../Hooks/useForm';
+import { login } from '../../../features/auth/createAsyncThunk';
+import { FcGoogle } from 'react-icons/fc';
+
 const Login = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const initialState = {
     email: '',
     password: ''
-  });
-  const { email, password } = data;
+  };
+
+  const { email, password, formState, onInputChange, onResetForm } =
+    useForm(initialState);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
+    console.log('submitdata', formState);
     e.preventDefault();
-    let loginData = {
-      email: e.target.value,
-      password: e.target.value
-    };
+    dispatch(login(formState));
+    onResetForm(initialState);
+  };
 
-    dispatch(loginUser(loginData));
-  };
-  const handleChange = (e) => {
-    setData({
-      [e.target.name]: e.target.value
-    });
-  };
-  console.log('data------------->', data);
   return (
-    <FormContainer onSubmit={handleSubmit}>
-      <FormTitle name="Se Connecter" />
-      <InputContainer>
-        <Input
-          type="email"
-          placeholder="Email"
-          required
-          onChange={handleChange}
-          value={email}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          required
-          onChange={handleChange}
-          autocomplete="current-password"
-          value={password}
-        />
-      </InputContainer>
-
-      <ButtonContainer>
-        <Button type="submit" name="S'identifier" />
-      </ButtonContainer>
-      <Link to="/creercompte">
-        <FormTitleH4>créer compte</FormTitleH4>
-      </Link>
-      <HorizontalRule />
-    </FormContainer>
+    <>
+      <FormContainer onSubmit={handleSubmit}>
+        <LabelText>Se connecter avec </LabelText>
+        <LabelTextGoogle>
+          {' '}
+          <FcGoogle />{' '}
+        </LabelTextGoogle>
+        <HorizontalRule />
+        <InputContainer>
+          <Input
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+            onChange={onInputChange}
+            value={email}
+          />
+          <Input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            onChange={onInputChange}
+            autocomplete="new-password"
+            value={password}
+          />
+        </InputContainer>
+        <ButtonContainer>
+          <Button type="submit" name="S'identifier" />
+        </ButtonContainer>
+        <LabelText> vous avez pas de compte ?</LabelText>
+        {/* <LinkContainer> */}
+        <Link to="/creercompte">
+          <FormTitleH4>créer compte</FormTitleH4>
+        </Link>
+        {/* </LinkContainer> */}
+      </FormContainer>
+    </>
   );
 };
-export default Login;
 
+const LabelText = styled.span`
+  font-size: 0.7em;
+  margin-top: 1em;
+  @media only screen and (min-width: 768px) {
+    font-size: 1em;
+  }
+`;
+const LabelTextGoogle = styled.span`
+  font-size: 1em;
+  margin-top: 1em;
+`;
+
+export default Login;

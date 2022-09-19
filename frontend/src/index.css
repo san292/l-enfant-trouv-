@@ -33,7 +33,7 @@ Variables
 }
 body {
 	font-family: var(--ff-primary);
-	background: var(--clr-white);
+	/* background: var(--clr-white); */
 	line-height: 1.5;
 	font-size: 0.875rem;
 	width: auto;

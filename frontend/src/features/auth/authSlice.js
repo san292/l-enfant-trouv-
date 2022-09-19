@@ -1,73 +1,67 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authService from './authService';
-
-// get user from localstorage
-const user = JSON.parse(localStorage.getItem('user'));
+import { createSlice } from '@reduxjs/toolkit';
+import { register, login } from './createAsyncThunk';
+import { toast } from 'react-toastify';
+import { verifyEmail } from '../user/userThunk';
 
 const initialState = {
-	user: user ? user : null,
-	isError: false,
-	isSucces: false,
-	isLoading: false,
-	message: '',
+  user: [],
+  isLoading: false,
+  msg: ''
 };
 
-// Register user
-export const register = createAsyncThunk(
-	'auth/register',
-	async (user, thunkAPI) => {
-		try {
-			return await authService.register(user);
-		} catch (error) {
-			const message =
-				(error.response &&
-					error.response.data &&
-					error.response.data.message) ||
-				error.message ||
-				error.toString();
-			return thunkAPI.rejectWithValue(message);
-		}
-	}
-);
-export const Login = createAsyncThunk('auth/Login', async (user, thunkAPI) => {
-  try {
-    return await authService.login(user);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
 export const authSlice = createSlice({
-	name: 'auth',
-	initialState,
-	reducers: {
-		reset: (state) => {
-			state.isError = false;
-			state.isSucces = false;
-			state.isLoading = false;
-			state.message = '';
-		},
-	},
-	extraReducers: (builder) => {
-		builder
-			.addCase(register.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(register.fulfilled, (state, action) => {
-				state.isLoading = false;
-				state.isSuccess = true;
-				state.user = action.payload;
-			})
-			.addCase(register.rejected, (state, action) => {
-				state.isLoading = false;
-				state.isError = true;
-				state.message = action.payload;
-				state.user = null;
-			});
-	},
+  name: 'auth',
+  initialState,
+  reducers: {
+    reset: (state) => {
+      state.isLoading = false;
+      state.message = '';
+    }
+  },
+  extraReducers: {
+    [register.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [register.fulfilled]: (state, { payload }) => {
+      const { msg } = payload;
+      state.isLoading = false;
+      toast.success(msg);
+      state.user = payload;
+    },
+    [register.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.user = null;
+      const { msg } = payload;
+      toast.error(msg);
+    },
+    [login.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [login.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      const { msg } = payload;
+      toast.success(msg);
+      state.user = payload;
+    },
+    [login.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      const { msg } = payload;
+      toast.error(msg);
+      state.user = null;
+    },
+    [verifyEmail.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [verifyEmail.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [verifyEmail.rejected]: (state, { payload }) => {
+      const { msg } = payload;
+      state.isLoading = false;
+      toast.error(msg);
+    }
+  }
 });
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;

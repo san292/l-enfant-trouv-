@@ -1,27 +1,48 @@
 import { navLink } from './links';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { ImMenu } from 'react-icons/im';
+import AsideBar from './AsideBar';
+import { useState } from 'react';
 
 const HeaderTest = () => {
-	return (
-		<Wrapper>
-			<div className='nav-center'>
-				<div className='nav-header'>
-					<Link to='/'>Logo</Link>
-				</div>
-				<ul className='nav-links'>
-					{navLink.map((link, idx) => {
-						const { pathname, name } = link;
+	const [toggleSideBar, setToggleSidebar] = useState(false);
 
-						return (
-							<li>
-								<Link to={pathname}>{name}</Link>
-							</li>
-						);
-					})}
-				</ul>
-			</div>
-		</Wrapper>
+	const handleToggleSidebar = () => {
+		setToggleSidebar(!toggleSideBar);
+	};
+
+	return (
+		<>
+			<Wrapper>
+				<div className='nav-center'>
+					<div className='nav-header'>
+						<Link to='/'>Logo</Link>
+						<button className='nav-btn'>
+							<ImMenu onClick={handleToggleSidebar} />
+						</button>
+					</div>
+					<ul className='nav-links'>
+						{navLink.map((link, idx) => {
+							const { pathname, name } = link;
+
+							return (
+								<li key={idx}>
+									<Link to={pathname}>{name}</Link>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</Wrapper>
+
+			{toggleSideBar && (
+				<AsideBar
+					toggleBar={toggleSideBar}
+					handleToggleSidebar={handleToggleSidebar}
+				/>
+			)}
+		</>
 	);
 };
 
@@ -43,30 +64,44 @@ const Wrapper = styled.nav`
 	.nav-links {
 		display: none;
 	}
-	@media (min-width: 992px) {
+
+	.nav-btn {
+		background: transparent;
+		border: none;
+		
+	}
+
+	@media (min-width: 768px) {
+		.nav-btn {
+			display: none;
+		}
+
 		.nav-center {
 			display: grid;
-			grid-template-columns: auto 1fr auto;
+			grid-template-columns: 1fr auto 1fr;
+			justify-content: space-between;
 			align-items: center;
 		}
 		.nav-links {
 			display: flex;
 			justify-content: center;
+			align-items: center;
 			li {
-				margin: 0 0.5rem;
+				display: inline-block;
+				margin: 0 1rem;
 			}
 			a {
+				display: inline-block;
 				color: 'grey';
 				font-size: 0.65rem;
 				text-transform: capitalize;
 				letter-spacing: 0.25rem;
 				padding: 0.5rem;
-				&:hover {
+				/* &:hover {
 					border-bottom: 2px solid red;
-				}
+				} */
 			}
 		}
 	}
 `;
-
 export default HeaderTest;

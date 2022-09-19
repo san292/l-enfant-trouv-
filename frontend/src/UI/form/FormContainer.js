@@ -6,9 +6,9 @@ const FormContainer = styled.form`
   right: 0;
   left: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-arround;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
   height: 80vh;
   width: 30vw;
   margin: auto;
@@ -18,49 +18,49 @@ const FormContainer = styled.form`
   color: #909497;
   text-transform: uppercase;
   letter-spacing: 0.4rem;
-  @media only screen and (max-width: 320px) {
-    width: 80vw;
-    height: 90vh;
-    hr {
-      margin-bottom: 0.3rem;
-    }
-    h4 {
-      font-size: small;
-    }
-  }
   @media only screen and (min-width: 360px) {
     width: 80vw;
-    height: 90vh;
-    h4 {
+    height: 60vh;
+    h3 {
       font-size: small;
     }
-  }
-  @media only screen and (min-width: 411px) {
-    width: 80vw;
-    height: 90vh;
   }
 
   @media only screen and (min-width: 768px) {
     width: 80vw;
     height: 80vh;
+    h3 {
+      font-size: x-large;
+    }
   }
   @media only screen and (min-width: 1024px) {
-    width: 70vw;
-    height: 50vh;
+    width: 80vw;
+    height: 60vh;
+    h3 {
+      font-size: x-large;
+    }
   }
   @media only screen and (min-width: 1280px) {
     width: 30vw;
-    height: 80vh;
+    height: 60vh;
   }
 `;
-const FormTitle = ({ name }) => {
-  return <FormTitleDynamic>{name}</FormTitleDynamic>;
+const FormTitle = ({ text }) => {
+  return <FormTitleDynamic>{text}</FormTitleDynamic>;
 };
 const FormTitleDynamic = styled.h3`
-  margin: 2em 0 2em 0;
+  color: black;
 `;
 const FormTitleH4 = styled.h4`
-  margin: 2em 0 2em 0;
+  margin-top: 1em;
+  color: #909497;
+  text-underline-offset: 0.2em;
+  background-size: 100% 0.1em, 0 0.1em;
+  &:hover {
+    text-underline-offset: 0.4em;
+    color: blue;
+    background-size: 0 0.1em, 100% 0.1em;
+  }
 `;
 
 export { FormContainer, FormTitle, FormTitleH4 };

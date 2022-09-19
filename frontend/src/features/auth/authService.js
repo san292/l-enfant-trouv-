@@ -1,32 +1,28 @@
-import axios from 'axios';
+import customFecth from '../../utils/axios';
 
 const register = async (userData) => {
-  const response = await axios.post(
-    'http://localhost:8000/api/v1/auth/register',
-    userData
-  );
-  console.log('response.---register----------->', response);
+  const response = await customFecth.post('auth/register', userData);
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data));
+    return response.data;
+  }
+};
+
+const login = async (userData) => {
+  const response = await customFecth.post('auth/login', userData);
+  if (response.data) {
   }
   return response.data;
 };
-const login = async (userData) => {
-  const response = await axios.post(
-    'http://localhost:8000/api/v1/auth/login',
-
-    userData
-  );
-  console.log('response.data-------------->', response);
+const verifyEmail = async (userData) => {
+  const response = await customFecth.post('auth/verif', userData);
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data));
   }
-  console.log('response.data--login------------>', response);
   return response.data;
 };
 
 const authService = {
   register,
-  login
+  login,
+  verifyEmail
 };
 export default authService;
