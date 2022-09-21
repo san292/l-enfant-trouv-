@@ -1,19 +1,25 @@
 import { BrowserRouter } from 'react-router-dom';
-import { Header } from './components';
 import Routes from './routes';
+import { Header } from './components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GlobalStyles from './UI/styles/Global';
+import { ThemeProvider } from 'styled-components';
+import { Theme } from './UI/styles/Theme';
 
 function App() {
-	return (
-		<>
-			<BrowserRouter>
-				<Header />
-				<Routes />
-				<ToastContainer />
-			</BrowserRouter>
-		</>
-	);
+  return (
+    <ThemeProvider theme={Theme}>
+      <>
+        <BrowserRouter>
+          <GlobalStyles />
+          <Header />
+          <Routes />
+          <ToastContainer />
+        </BrowserRouter>
+      </>
+    </ThemeProvider>
+  );
 }
 
 export default App;
