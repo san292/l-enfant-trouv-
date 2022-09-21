@@ -1,3 +1,6 @@
+import { createGlobalStyle } from 'styled-components';
+const GlobalStyles = createGlobalStyle`
+
 /* 
 ===============
 FONT
@@ -13,12 +16,17 @@ Variables
 */
 
 :root {
+    --clr-grey-input:#e8f0fe;
 	--clr-primary: #678e3e;
 	--clr-primary-light: #beed8c;
 	--clr-grey-1: #102a42;
+    --clr-grey-2:#575759;
 	--clr-grey-5: #617d98;
 	--clr-grey-10: #f1f5f8;
 	--clr-white: #fff;
+    --clr-Blue-1:#081d65;
+    --clr-blue-2:#d7bde2;
+
 	--ff-primary: 'Catamaran', sans-serif;
 	--ff-secondary: 'Grand hotel', cursive;
 	--transition: all 3s ease;
@@ -33,7 +41,7 @@ Variables
 }
 body {
 	font-family: var(--ff-primary);
-	background: var(--clr-white);
+	background: ${({ theme }) => theme.colors.body};
 	line-height: 1.5;
 	font-size: 0.875rem;
 	width: auto;
@@ -94,3 +102,5 @@ p {
 		line-height: 1;
 	}
 }
+`;
+export default GlobalStyles;

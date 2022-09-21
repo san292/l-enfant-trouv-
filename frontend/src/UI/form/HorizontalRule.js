@@ -5,7 +5,7 @@ export const HorizontalRule = styled.hr`
   border-radius: 0.8rem;
   border: none;
   background: linear-gradient(to right, #14163c 0%, #03217b 79%);
-  background-color: #ebd0d0;
+  background: var(--clr-Blue);
   margin: 2em 0 1em 0;
   backdrop-filter: blur(25px);
 `;
