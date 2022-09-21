@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
   FormContainer,
@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { useForm } from '../../../Hooks/useForm';
 import { login } from '../../../features/auth/createAsyncThunk';
 import { FcGoogle } from 'react-icons/fc';
+import GoogleAuthLogin from '../GoogleAuth/GoogleAuthLogin';
 
 const Login = () => {
   const initialState = {
@@ -24,23 +25,25 @@ const Login = () => {
   const { email, password, formState, onInputChange, onResetForm } =
     useForm(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     console.log('submitdata', formState);
     e.preventDefault();
     dispatch(login(formState));
     onResetForm(initialState);
+    navigate('/');
   };
 
   return (
     <>
       <FormContainer onSubmit={handleSubmit}>
-        <LabelText>Se connecter avec </LabelText>
         <LabelTextGoogle>
           {' '}
-          <FcGoogle />{' '}
+          <GoogleAuthLogin />
         </LabelTextGoogle>
         <HorizontalRule />
+        <LabelText> votre Email</LabelText>
         <InputContainer>
           <Input
             name="email"
@@ -75,8 +78,7 @@ const Login = () => {
 };
 
 const LabelText = styled.span`
-  font-size: 0.7em;
-  margin-top: 1em;
+  font-size: 0.5em;
   @media only screen and (min-width: 768px) {
     font-size: 1em;
   }
