@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
   FormContainer,
@@ -25,12 +25,14 @@ const Login = () => {
   const { email, password, formState, onInputChange, onResetForm } =
     useForm(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     console.log('submitdata', formState);
     e.preventDefault();
     dispatch(login(formState));
     onResetForm(initialState);
+    navigate('/');
   };
 
   return (
