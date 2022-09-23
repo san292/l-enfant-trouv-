@@ -7,7 +7,12 @@ FONT
 ===============
 */
 
-@import url('https://fonts.googleapis.com/css?family=Catamaran:400,700|Grand+Hotel');
+
+   
+    @import url('https://fonts.googleapis.com/css?family=Catamaran:400,700|Grand+Hotel'); 
+    
+
+
 
 /* 
 ===============
@@ -26,6 +31,8 @@ Variables
 	--clr-white: #fff;
     --clr-Blue-1:#081d65;
     --clr-blue-2:#d7bde2;
+	--span-color:#a82a14;
+	--clr-green:#82E0AA ;
 
 	--ff-primary: 'Catamaran', sans-serif;
 	--ff-secondary: 'Grand hotel', cursive;
@@ -66,7 +73,10 @@ h1 {
 	font-size: 3rem;
 }
 h2 {
+	margin:1rem;
 	font-size: 2rem;
+	color: var(--clr-green);
+	font-family: var(--ff-secondary);
 }
 h3 {
 	font-size: 1.5rem;
@@ -75,7 +85,8 @@ h4 {
 	font-size: 0.875rem;
 }
 p {
-	margin-bottom: 1.25rem;
+	margin: 1rem;
+	width:95%;
 }
 
 @media screen and (min-width) {
