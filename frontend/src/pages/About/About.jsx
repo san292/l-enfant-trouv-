@@ -1,10 +1,12 @@
 import React from 'react';
 import meeting from '../../UI/images/meeting.jpg';
-import photo1 from '../../UI/images/child.jpg';
+import photo from '../../UI/images/child1.jpg';
 import alawa from '../../UI/images/alawa.jpg';
 import styled from 'styled-components';
 import { Flex } from '../../UI/styles/Flex';
 import { Team } from './Team';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 const About = () => {
   return (
@@ -13,7 +15,7 @@ const About = () => {
         <h2>Le debut</h2>
         <Flex>
           {/* <Img src={photo} alt="img" /> */}
-          <p>
+          <Paragraph>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore
             animi saepe suscipit iusto quis assumenda quaerat ipsam laudantium
             obcaecati. Temporibus reiciendis est esse iusto ipsa optio
@@ -38,30 +40,66 @@ const About = () => {
             quia sit dolorum perspiciatis iusto, ut repudiandae amet mollitia
             eius inventore, quo doloribus, incidunt natus reprehenderit
             excepturi quidem praesentium.
-          </p>
+          </Paragraph>
         </Flex>
         <h2>Conseil d'administartion</h2>
         <Flex>
           <Img src={meeting} alt="img" />
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea qui
-            eaque maxime rem sit iste at, iure quidem inventore corporis,
-            voluptatum voluptate tempora. Ipsam ut corporis facilis, illum quam
-            impedit dolores? Ipsum dicta nobis in odio. Nam repellat natus ab
-            modi placeat harum quia eius excepturi reiciendis reprehenderit
-            eaque expedita magni, inventore officiis facilis deleniti, quisquam
-            cum fugit! Soluta ratione laborum architecto, suscipit placeat
-            labore dolorem mollitia recusandae nobis magni facilis voluptas aut
-            harum velit iure accusamus nesciunt nihil explicabo, maiores eos
-            quidem? Exercitationem ea tempora ex nemo nihil qui recusandae, vel
-            corrupti odit? Eius aliquam quisquam ratione velit iste.
-          </p>
+          <Paragraph>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore
+            animi saepe suscipit iusto quis assumenda quaerat ipsam laudantium
+            obcaecati. Temporibus reiciendis est esse iusto ipsa optio
+            repellendus, recusandae velit provident fugit consectetur ullam
+            error cupiditate corrupti animi vitae dolore repudiandae voluptate
+            incidunt inventore rerum voluptatem. Aut vel voluptate quas modi
+            illo, aperiam tenetur porro vero nihil nobis animi commodi. Iure
+            totam nobis incidunt blanditiis animi maxime officia dolorem iusto
+            quis, hic quod atque dolorum ratione nostrum reiciendis, quidem
+            doloremque? Magnam minima vel illum aliquid impedit dolore
+            cupiditate ratione officiis voluptatum possimus eveniet laudantium
+            facere corrupti molestias fugiat et iste, laborum dicta porro optio
+            nemo veniam vero debitis veritatis! Aperiam neque consequatur at
+            corporis odit aut. Rerum ea hic nobis tenetur deserunt qui
+            accusantium praesentium ipsam tempore? At tempore eos eum numquam
+            amet et explicabo illo aperiam ullam aut minima nulla possimus,
+            incidunt voluptate a laboriosam suscipit ab, fugiat fugit
+            voluptatum. Non illo eos laudantium neque perspiciatis accusantium
+            quisquam cupiditate autem eveniet suscipit perferendis placeat
+            officiis adipisci fugit corrupti in officia dignissimos explicabo
+            nostrum impedit eum, est, veniam molestias fugiat. Soluta laborum
+            quia sit dolorum perspiciatis iusto, ut repudiandae amet mollitia
+            eius inventore, quo doloribus, incidunt natus reprehenderit
+            excepturi quidem praesentium.Lorem ipsum, dolor sit amet consectetur
+            adipisicing elit. Dolore animi saepe suscipit iusto quis assumenda
+            quaerat ipsam laudantium obcaecati. Temporibus reiciendis est esse
+            iusto ipsa optio repellendus, recusandae velit provident fugit
+            consectetur ullam error cupiditate corrupti animi vitae dolore
+            repudiandae voluptate incidunt inventore rerum voluptatem. Aut vel
+            voluptate quas modi illo, aperiam tenetur porro vero nihil nobis
+            animi commodi. Iure totam nobis incidunt blanditiis animi maxime
+            officia dolorem iusto quis, hic quod atque dolorum ratione nostrum
+            reiciendis, quidem doloremque? Magnam minima vel illum aliquid
+            impedit dolore cupiditate ratione officiis voluptatum possimus
+            eveniet laudantium facere corrupti molestias fugiat et iste, laborum
+            dicta porro optio nemo veniam vero debitis veritatis! Aperiam neque
+            consequatur at corporis odit aut. Rerum ea hic nobis tenetur
+            deserunt qui accusantium praesentium ipsam tempore? At tempore eos
+            eum numquam amet et explicabo illo aperiam ullam aut minima nulla
+            possimus, incidunt voluptate a laboriosam suscipit ab, fugiat fugit
+            voluptatum. Non illo eos laudantium neque perspiciatis accusantium
+            quisquam cupiditate autem eveniet suscipit perferendis placeat
+            officiis adipisci fugit corrupti in officia dignissimos explicabo
+            nostrum impedit eum, est, veniam molestias fugiat. Soluta laborum
+            quia sit dolorum perspiciatis iusto, ut repudiandae amet mollitia
+            eius inventore, quo doloribus, incidunt natus reprehenderit
+            excepturi quidem praesentium.
+          </Paragraph>
         </Flex>
       </AboutUs>
       <h2>Nos meilleurs souvenirs durant ses dernieres années : </h2>
       <Flex>
-        <p>
-          <Img src={alawa} alt="img"></Img>
+        <Img src={photo} alt="img"></Img>
+        <Paragraph>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae non
           quibusdam iure. Tenetur beatae harum neque iure repellendus. Officiis
           nostrum dolor harum iure error, reprehenderit voluptatibus qui nihil
@@ -106,39 +144,63 @@ const About = () => {
           dolor illo excepturi? Voluptate, a sed fugit natus ex mollitia iure in
           accusantium eveniet commodi? Blanditiis, molestias id veniam tenetur
           aspernatur necessitatibus porro esse ab?
-        </p>
+        </Paragraph>
       </Flex>
       <h2>L'équipe </h2>
-      <FlexTeam>
-        {Team.map((team) => (
-          <DivTeam key={team.name}>
-            {/* <TexteContaine > */}
-            <Img src={team.image} alt="img"></Img>
-            <h3>{team.name}</h3>
-            <span>{team.role}</span>
-            {/* </TexteContaine> */}
-            {/* <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium repudiandae eaque excepturi! Reiciendis nesciunt fuga
-              magnam labore voluptas culpa odio doloremque eius recusandae
-              cupiditate magni beatae dolorum ducimus, accusantium corrupti
-              voluptates deserunt autem ab dolore quia quaerat vel ea modi ex.
-              Nobis ducimus quis aut maxime sunt modi. Quasi possimus, suscipit
-              laudantium laborum temporibus aliquam natus facere adipisci minus
-              deleniti veritatis iste rerum ab repudiandae eum at veniam optio
-              voluptatem repellendus libero ipsa totam quia nulla quod.
-              Necessitatibus pariatur sequi doloremque sit atque reprehenderit,
-              fugiat laudantium voluptatibus in quia mollitia temporibus quaerat
-              aliquam a qui, delectus, excepturi ipsa omnis asperiores.
-            </p> */}
-          </DivTeam>
-        ))}
-      </FlexTeam>
+
+      <ContainerCarousel>
+        <Carousel
+          autoPlay
+          axis="vertical"
+          verticalSwipe="natural"
+          showThumbs={false}
+          infiniteLoop={true}
+          width="90%"
+        >
+          {Team.map((team) => (
+            <DiveContainerTeam key={team.name}>
+              <Img src={team.image} alt="img" />
+              <h3>{team.name}</h3>
+              <span>{team.role}</span>
+
+              <Paragraph>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+                quo, sit veniam laudantium officiis ad rerum totam hic officia
+                corporis ea sunt! Odio, cumque, distinctio voluptatibus nesciunt
+                itaque facilis nam, eveniet aut id iusto laudantium est
+                repellendus. Magni quaerat, asperiores, officia dignissimos
+                recusandae tenetur voluptatem expedita ut enim natus
+                consectetur! Nostrum mollitia corrupti atque, voluptatem vel
+                praesentium dolores magni dolor est aspernatur doloribus. Modi
+                cumque, animi provident accusamus officia iusto eos ullam porro
+                laudantium nesciunt, aperiam sapiente deleniti veritatis sint
+                dolorum, cupiditate non exercitationem fugit quidem placeat
+                veniam eligendi. Laborum aperiam provident mollitia architecto
+                quas iure, fugit explicabo quod voluptate culpa ipsum illum
+                impedit voluptatem vero aspernatur facilis laboriosam.
+                Repellendus dignissimos cupiditate eos pariatur praesentium quas
+                veritatis ad cum tempore illum quis, sit laboriosam ab ratione
+                minus quam nulla placeat debitis, quod veniam quaerat,
+                voluptates eaque! Veniam voluptatibus natus earum enim. Eaque
+                quo quidem veniam. Eos tenetur, vitae deleniti odit porro labore
+                aut, expedita deserunt quae totam repellat, laboriosam quo
+                voluptate nisi earum perferendis nesciunt corporis! Fugit
+                deserunt placeat, praesentium similique culpa doloremque. Et,
+                neque deleniti velit ipsam illo fuga vel! Mollitia nobis
+                blanditiis voluptatem esse natus reiciendis. Numquam facilis
+                optio omnis at perspiciatis architecto obcaecati repudiandae
+                unde distinctio ipsa.
+              </Paragraph>
+            </DiveContainerTeam>
+          ))}
+        </Carousel>
+      </ContainerCarousel>
     </ContainerAbout>
   );
 };
 const ContainerAbout = styled.div`
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,26 +212,30 @@ const AboutUs = styled.div`
   align-items: start;
 `;
 const Img = styled.img`
-  flex: 2;
-  border-radius: 1rem;
-  float: right;
-  width: 10rem;
-  height: 10rem;
-  margin: 1rem 0.5rem 0 1rem;
+  border-radius: 0.8rem;
+  width: 20rem;
+  height: 16rem;
 `;
 
-const FlexTeam = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
+const Paragraph = styled.p`
+  height: 15rem;
+  overflow-x: hidden;
+
+  overflow: clip;
 `;
-const DivTeam = styled.div`
-  flex: 0 1 auto;
-  flex: 2 5rem;
+const DiveContainerTeam = styled.div`
+  height: 30rem;
+
   display: flex;
   flex-direction: column;
   text-align: center;
-  @media screen and (min-width: 768px) {
+  justify-content: center;
+`;
+const ContainerCarousel = styled.div`
+  width: auto;
+  margin: 0 auto;
+  @media screen and (min-width: 786px) {
+    width: 60rem;
   }
 `;
 
