@@ -17,4 +17,3 @@ const StyledButton = styled.button`
   border-radius: 2em;
   cursor: pointer;
 `;
-// export default StyledButton;

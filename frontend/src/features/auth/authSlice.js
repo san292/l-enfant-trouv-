@@ -6,9 +6,10 @@ import { verifyEmail } from '../user/userThunk';
 const initialState = {
   user: [],
   isLoading: false,
-  msg: ''
+  msg: '',
+  userName: localStorage.getItem('username') || 'mounie'
 };
-
+console.log('locastorage', localStorage.getItem('userName'));
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -16,6 +17,9 @@ export const authSlice = createSlice({
     reset: (state) => {
       state.isLoading = false;
       state.message = '';
+    },
+    displayName: (state, action) => {
+      state.userName = localStorage.setItem('username', action.payload);
     }
   },
   extraReducers: {
@@ -63,5 +67,5 @@ export const authSlice = createSlice({
     }
   }
 });
-export const { reset } = authSlice.actions;
+export const { reset, displayName, logout } = authSlice.actions;
 export default authSlice.reducer;
