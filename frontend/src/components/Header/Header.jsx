@@ -1,22 +1,26 @@
 import { navLink } from './links';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ImMenu } from 'react-icons/im';
 import AsideBar from './AsideBar';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { googleLogout } from '@react-oauth/google';
 
 const HeaderTest = () => {
   const [toggleSideBar, setToggleSidebar] = useState(false);
+
   const userName = useSelector((state) => state.auth.userName);
-  const dispatch = useDispatch;
+  const navigate = useNavigate();
+
   const handleToggleSidebar = () => {
     setToggleSidebar(!toggleSideBar);
   };
+
   const onLogout = () => {
     googleLogout();
     localStorage.removeItem('username');
+    window.location.reload();
   };
 
   return (
@@ -34,11 +38,12 @@ const HeaderTest = () => {
             {navLink.map((link, idx) => {
               const { pathname, name } = link;
               if (name === 'Se connecter') {
-                console.log('name', name);
                 return userName ? (
-                  <button onClick={() => onLogout}>Se Deconnecter</button>
+                  <button key={idx} onClick={onLogout}>
+                    Logout
+                  </button>
                 ) : (
-                  <button>Se Connecter</button>
+                  <Link to={pathname}>{name}</Link>
                 );
               }
               return (

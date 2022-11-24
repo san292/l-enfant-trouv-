@@ -7,9 +7,9 @@ const initialState = {
   user: [],
   isLoading: false,
   msg: '',
-  userName: localStorage.getItem('username') || 'mounie'
+  userName: localStorage.getItem('username') && localStorage.getItem('username')
 };
-console.log('locastorage', localStorage.getItem('userName'));
+console.log('getlocalstorage', localStorage.getItem('username'));
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -19,7 +19,7 @@ export const authSlice = createSlice({
       state.message = '';
     },
     displayName: (state, action) => {
-      state.userName = localStorage.setItem('username', action.payload);
+      state.userName = action.payload;
     }
   },
   extraReducers: {
@@ -67,5 +67,5 @@ export const authSlice = createSlice({
     }
   }
 });
-export const { reset, displayName, logout } = authSlice.actions;
+export const { reset, displayName } = authSlice.actions;
 export default authSlice.reducer;

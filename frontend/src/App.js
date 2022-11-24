@@ -3,22 +3,22 @@ import Routes from './routes';
 import { Header } from './components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import GlobalStyles from './UI/styles/Global';
+import GlobalStyles from './UI/styles/Globals';
 import { ThemeProvider } from 'styled-components';
 import { Theme } from './UI/styles/Theme';
 
 function App() {
   return (
-    <ThemeProvider theme={Theme}>
-      <>
+    <>
+      <ThemeProvider theme={Theme}>
         <BrowserRouter>
-          {/* <GlobalStyles /> */}
+          <GlobalStyles />
           <Header />
           <Routes />
           <ToastContainer />
         </BrowserRouter>
-      </>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }
 

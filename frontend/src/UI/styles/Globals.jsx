@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-const GlobalStyles = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
 
 /* 
 ===============
@@ -9,7 +9,9 @@ FONT
 
 
    
-    @import url('https://fonts.googleapis.com/css?family=Catamaran:400,700|Grand+Hotel'); 
+    ${
+      '' /* @import url('https://fonts.googleapis.com/css?family=Catamaran:400,700|Grand+Hotel');  */
+    }
     
 
 
@@ -20,15 +22,15 @@ Variables
 ===============
 */
 
-:root {
-    --clr-grey-input:#e8f0fe;
-	--clr-primary: #678e3e;
-	--clr-primary-light: #beed8c;
-	--clr-grey-1: #102a42;
+root {
+    --clr-grey-input:#e8f0fe,
+	--clr-primary: #678e3e,
+	--clr-primary-light: #beed8c,
+	--clr-grey-1: #102a42,
     --clr-grey-2:#575759;
-	--clr-grey-5: #617d98;
-	--clr-grey-10: #f1f5f8;
-	--clr-white: #fff;
+	--clr-grey-5: #617d98,
+	--clr-grey-10: #f1f5f8,
+	--clr-white: #fff,
     --clr-Blue-1:#081d65;
     --clr-blue-2:#d7bde2;
 	--span-color:#a82a14;
@@ -74,7 +76,7 @@ h1 {
 }
 h2 {
 	margin:1rem;
-	font-size: 2rem;
+	font-size:2rem;
 	color: var(--clr-green);
 	font-family: var(--ff-secondary);
 }
@@ -114,4 +116,4 @@ p {
 	}
 }
 `;
-export default GlobalStyles;
+export default GlobalStyle;

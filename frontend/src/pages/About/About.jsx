@@ -9,7 +9,7 @@ import { data } from '../../data/data';
 
 const About = () => {
   const dataText = data[0].texte;
-  console.log('data', dataText);
+
   const [readMore, setReadMore] = useState(false);
   const limit = 700;
   const hendelToggleShowMore = () => {
