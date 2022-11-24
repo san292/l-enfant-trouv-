@@ -2,7 +2,8 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { displayName } from '../../../features/auth/authSlice';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { useDispatch } from 'react-redux';
 
 const GoogleAuthLogin = () => {
   const [user, setUser] = useState();
@@ -23,14 +24,15 @@ const GoogleAuthLogin = () => {
       });
       const data = await res.json();
       const { name } = data;
-      console.log('data', data);
-      setUser(data);
-      dispatch(displayName(name));
-      console.log('user ggole', name);
 
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+      navigate('/');
+      setTimeout(() => {}, 2000);
+      setUser(data);
+      if (data) {
+        localStorage.setItem('username', name);
+        dispatch(displayName(name));
+        window.location.reload();
+      }
     } catch (error) {
       console.log(error);
     }
